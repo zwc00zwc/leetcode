@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.list;
 
 /**
  * @Author: siskin_zh
