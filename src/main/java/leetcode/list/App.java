@@ -12,14 +12,14 @@ public class App {
         listNode.next = new ListNode(2);
         listNode.next.next = new ListNode(3);
         listNode.next.next.next = new ListNode(4);
-//        listNode.next.next.next.next = new ListNode(5);
+        listNode.next.next.next.next = new ListNode(5);
 //        listNode.next.next.next.next.next = new ListNode(6);
 //        listNode.next.next.next.next.next.next = new ListNode(7);
 
-
-        ListNode temp = swapPairs(listNode);;
-        ListNode res = temp;
-        temp.next = listNode;
+        removeNthFromEnd(listNode,2);
+//        ListNode temp = swapPairs(listNode);;
+//        ListNode res = temp;
+        //temp.next = listNode;
         System.out.println("---------");
         //ListNode res = rotateRight(listNode,2);
         //int r = kthToLast(listNode,3);
@@ -178,5 +178,30 @@ public class App {
         //后续节点递归处理
         head.next = swapPairs(head.next);
         return next;
+    }
+
+    /**
+     * 删除倒数第n个节点
+     * @param head
+     * @param n
+     * @return
+     */
+    public static ListNode removeNthFromEnd(ListNode head, int n) {
+        head = new ListNode(0,head);
+        ListNode r = head;
+        ListNode preRemove = head;
+        int i = 2;
+        while (true){
+            if (i>n+2){
+                preRemove = preRemove.next;
+            }
+            r = r.next;
+            if (r == null){
+                break;
+            }
+            i++;
+        }
+        preRemove.next = preRemove.next.next;
+        return head.next;
     }
 }
