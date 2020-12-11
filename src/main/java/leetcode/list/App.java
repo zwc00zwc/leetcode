@@ -13,10 +13,13 @@ public class App {
         listNode.next.next = new ListNode(3);
         listNode.next.next.next = new ListNode(4);
         listNode.next.next.next.next = new ListNode(5);
-//        listNode.next.next.next.next.next = new ListNode(6);
-//        listNode.next.next.next.next.next.next = new ListNode(7);
+        listNode.next.next.next.next.next = new ListNode(6);
+        listNode.next.next.next.next.next.next = new ListNode(7);
 
-        removeNthFromEnd(listNode,2);
+        ListNode listNode2 = new ListNode(100);
+        listNode2.next = new ListNode(101);
+        listNode2.next.next = new ListNode(102);
+        mergeInBetween(listNode,2,4,listNode2);
 //        ListNode temp = swapPairs(listNode);;
 //        ListNode res = temp;
         //temp.next = listNode;
@@ -203,5 +206,151 @@ public class App {
         }
         preRemove.next = preRemove.next.next;
         return head.next;
+    }
+
+    /**
+     * 翻转链表
+     * @param head
+     * @return
+     */
+    public static ListNode reverseList(ListNode head) {
+        if (head==null){
+            return head;
+        }
+        ListNode next = null;
+        ListNode newHead = new ListNode(head.val);
+
+        while (head.next!=null){
+            next = new ListNode(head.next.val);
+            next.next = newHead;
+            newHead = next;
+            head = head.next;
+        }
+        return newHead;
+    }
+
+    /**
+     * 判断回文链表
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head) {
+        ListNode forListNode = head;
+
+        if (head==null){
+            return true;
+        }
+        ListNode next = null;
+        ListNode newHead = new ListNode(head.val);
+
+        while (head.next!=null){
+            next = new ListNode(head.next.val);
+            next.next = newHead;
+            newHead = next;
+            head = head.next;
+        }
+
+        boolean res = false;
+        while (forListNode!=null && newHead!=null){
+            if (forListNode.val!= newHead.val){
+                res = false;
+                break;
+            }
+            forListNode = forListNode.next;
+            newHead = newHead.next;
+            res = true;
+        }
+        return res;
+    }
+
+    /**
+     * 分割链表
+     * @param root
+     * @param k
+     * @return
+     */
+    public static ListNode[] splitListToParts(ListNode root, int k) {
+        ListNode[] array = new ListNode[k];
+        int[] len = new int[k];
+        if (root == null){
+            return array;
+        }
+        ListNode head = root;
+        int i = 0;
+        while (root!=null){
+            if (i>=len.length){
+                i=0;
+            }
+            len[i]++;
+            root = root.next;
+            i++;
+        }
+
+        ListNode temp = null;
+        i = 0;
+        while (head!=null){
+            if (len[i]<1){
+                i++;
+            }
+            if (array[i]==null){
+                array[i] = new ListNode(head.val);
+                temp = array[i];
+            }else {
+                temp.next = new ListNode(head.val);
+                temp = temp.next;
+            }
+            head = head.next;
+            len[i]--;
+        }
+        return array;
+    }
+
+    /**
+     * 中间节点
+     * @param head
+     * @return
+     */
+    public static ListNode middleNode(ListNode head) {
+        ListNode root = head;
+        int count = 1;
+        while (root.next!=null){
+            root = root.next;
+            count++;
+        }
+        int i = count / 2 +1;
+
+        while (i>1){
+            head = head.next;
+            i--;
+        }
+        return head;
+    }
+
+    /**
+     * 合并两个链表
+     * @param list1
+     * @param a
+     * @param b
+     * @param list2
+     * @return
+     */
+    public static ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        ListNode root = list1;
+        int i = 1;
+        while (i<a){
+            list1 = list1.next;
+            i++;
+        }
+        ListNode an = list1;
+        while (i<b+1){
+            list1 = list1.next;
+            i++;
+        }
+        an.next = list2;
+        while (list2.next!=null){
+            list2 = list2.next;
+        }
+        list2.next = list1.next;
+        return root;
     }
 }
