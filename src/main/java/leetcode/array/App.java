@@ -7,10 +7,19 @@ package leetcode.array;
 public class App {
     public static void main(String[] args) {
         int[] array = new int[]{3,1,6,4,7,4,5};
-        kuickSort(array,0,array.length - 1);
+        //kuickSort(array,0,array.length - 1);
+        mergeSort(array,0,6);
         for (int i = 0;i<array.length;i++){
             System.out.println(array[i]);
         }
+
+//        mergeSort(array,0,6);
+//        int[] arr1 = new int[]{1,3,5,7};
+//        int[] arr2 = new int[]{2,4,6,8};
+//        int[] res = merge(arr1,arr2);
+//        for (int i = 0;i<res.length;i++){
+//            System.out.println(res[i]);
+//        }
     }
 
     /**
@@ -95,5 +104,78 @@ public class App {
         array[left] = array[first];
         array[first] = temp;
         return left;
+    }
+
+
+    private static void mergeSort(int[] array,int start,int end){
+        if (start<end){
+            int mid = (end + start)/2;
+            mergeSort(array,start,mid);
+            mergeSort(array,mid+1,end);
+            merge(array,start,mid,end);
+        }
+    }
+
+    /**
+     *
+     * @param array
+     * @param start
+     * @param mid
+     * @param end
+     * @return
+     */
+    private static void merge(int[] array,int start,int mid,int end){
+
+        int[] tempArray = new int[array.length];
+        int m = start;
+        int n = mid+1;
+        int i = 0;
+        while (m<=mid && n<=end){
+            if (array[m]<array[n]){
+                tempArray[i++] = array[m++];
+            }else {
+                tempArray[i++] = array[n++];
+            }
+        }
+        while (m<=mid){
+            tempArray[i++] = array[m++];
+        }
+        while (n<=end){
+            tempArray[i++] = array[n++];
+        }
+        i =0;
+        while (start<=end){
+            array[start++] = tempArray[i++];
+        }
+    }
+
+    /**
+     * 合并两个有序数组
+     * @param arr1
+     * @param arr2
+     * @return
+     */
+    private static int[] merge(int[] arr1,int[] arr2){
+        int[] tempArray = new int[arr1.length+arr2.length];
+        int m = 0;
+        int n = 0;
+        int i = 0;
+        while (m<arr1.length && n<arr2.length){
+            if (arr1[m]<arr2[n]){
+                tempArray[i] = arr1[m];
+                m++;
+            }else {
+                tempArray[i] = arr2[n];
+                n++;
+            }
+            i++;
+        }
+        while (m<arr1.length){
+            tempArray[i++] = arr1[m++];
+        }
+        while (n<arr2.length){
+            tempArray[i++] = arr2[n++];
+        }
+        return tempArray;
     }
 }
