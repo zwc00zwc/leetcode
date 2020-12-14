@@ -8,18 +8,18 @@ import java.util.List;
  */
 public class App {
     public static void main(String[] args) {
-        ListNode listNode = new ListNode(1);
-        listNode.next = new ListNode(2);
+        ListNode listNode = new ListNode(2);
+        listNode.next = new ListNode(4);
         listNode.next.next = new ListNode(3);
-        listNode.next.next.next = new ListNode(4);
-        listNode.next.next.next.next = new ListNode(5);
-        listNode.next.next.next.next.next = new ListNode(6);
-        listNode.next.next.next.next.next.next = new ListNode(7);
+//        listNode.next.next.next = new ListNode(4);
+//        listNode.next.next.next.next = new ListNode(5);
+//        listNode.next.next.next.next.next = new ListNode(6);
+//        listNode.next.next.next.next.next.next = new ListNode(7);
 
-        ListNode listNode2 = new ListNode(100);
-        listNode2.next = new ListNode(101);
-        listNode2.next.next = new ListNode(102);
-        mergeInBetween(listNode,2,4,listNode2);
+        ListNode listNode2 = new ListNode(5);
+        listNode2.next = new ListNode(6);
+        listNode2.next.next = new ListNode(4);
+        addTwoNumbers(listNode,listNode2);
 //        ListNode temp = swapPairs(listNode);;
 //        ListNode res = temp;
         //temp.next = listNode;
@@ -352,5 +352,53 @@ public class App {
         }
         list2.next = list1.next;
         return root;
+    }
+
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int temp = 0;
+        int pre = 0;
+        ListNode res = new ListNode(0);
+        ListNode root = res;
+        while (l1!=null && l2!=null) {
+            temp = l1.val + l2.val + pre;
+            pre = 0;
+            if (temp >= 10) {
+                pre = temp / 10;
+                temp = temp % 10;
+            }
+            res.next = new ListNode(temp);
+            res = res.next;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+
+        while (l1!=null){
+            temp = l1.val + pre;
+            pre = 0;
+            if (temp >= 10) {
+                pre = temp / 10;
+                temp = temp % 10;
+            }
+            res.next = new ListNode(temp);
+            res = res.next;
+            l1 = l1.next;
+        }
+
+        while (l2!=null){
+            temp = l2.val + pre;
+            pre = 0;
+            if (temp >= 10) {
+                pre = temp / 10;
+                temp = temp % 10;
+            }
+            res.next = new ListNode(temp);
+            res = res.next;
+            l2 = l2.next;
+        }
+
+        if (pre > 0){
+            res.next = new ListNode(pre);
+        }
+        return root.next;
     }
 }
