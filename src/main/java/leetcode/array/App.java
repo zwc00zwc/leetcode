@@ -8,10 +8,14 @@ public class App {
     public static void main(String[] args) {
         int[] array = new int[]{3,1,6,4,7,4,5};
         //kuickSort(array,0,array.length - 1);
-        mergeSort(array,0,6);
-        for (int i = 0;i<array.length;i++){
-            System.out.println(array[i]);
-        }
+
+        int[][] r = new int[][]{{1,2,3},{4,5,6}};
+        transpose(r);
+
+//        mergeSort(array,0,6);
+//        for (int i = 0;i<array.length;i++){
+//            System.out.println(array[i]);
+//        }
 
 //        mergeSort(array,0,6);
 //        int[] arr1 = new int[]{1,3,5,7};
@@ -177,5 +181,20 @@ public class App {
             tempArray[i++] = arr2[n++];
         }
         return tempArray;
+    }
+
+    /**
+     * 矩阵转置
+     * @param A
+     * @return
+     */
+    public static int[][] transpose(int[][] A) {
+        int[][] res = new int[A[0].length][A.length];
+        for (int i=0;i<A.length;i++){
+            for (int k = 0;k<A[0].length;k++){
+                res[k][i] = A[i][k];
+            }
+        }
+        return res;
     }
 }
