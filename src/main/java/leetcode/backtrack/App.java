@@ -13,7 +13,9 @@ public class App {
         //List<List<Integer>> result = combine(4,2);
         //removeDuplicates("abbaca");
 
-        List<List<String>> res = solveNQueens(4);
+//        List<List<String>> res = solveNQueens(4);
+        int[] coins = new int[]{2};
+        int res = coinChange(coins,3);
         //int count = numberOfMatches(7);
         System.out.println(res);
     }
@@ -229,4 +231,41 @@ public class App {
         }
         return S;
     }
+
+    /**
+     * 零钱兑换 动态规划
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public static int coinChange(int[] coins, int amount) {
+        if (amount == 0){
+            return 0;
+        }
+
+        int[] dp = new int[amount+1];
+        for (int i = 1;i<=amount;i++){
+            for (int k = 0;k<coins.length;k++){
+                if (i == coins[k]){
+                    dp[i] = 1;
+                    continue;
+                }
+                if (i-coins[k]<0 || dp[i-coins[k]]<1){
+                    continue;
+                }
+                if (dp[i]>0){
+                    if (dp[i-coins[k]]+1 < dp[i]){
+                        dp[i] = dp[i-coins[k]]+1;
+                    }
+                }else {
+                    dp[i] = dp[i-coins[k]]+1;
+                }
+            }
+        }
+        if (dp[amount] == 0){
+            return -1;
+        }
+        return dp[amount];
+    }
+
 }
