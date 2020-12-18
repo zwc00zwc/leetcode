@@ -93,8 +93,18 @@ public class App {
         int[] temp = new int[1];
         backPathSum(root,sum,temp,res);
         return res[0];
+
+//        int[] temp = new int[1];
+//        return backPathSum(root,sum,temp);
     }
 
+    /**
+     * 路径总和 无返回值递归函数，需要搜索整颗数的时候采用
+     * @param root
+     * @param sum
+     * @param temp
+     * @param res
+     */
     public static void backPathSum(TreeNode root,int sum,int[] temp, boolean[] res){
         if (root == null){
             return;
@@ -114,6 +124,40 @@ public class App {
             backPathSum(root.right,sum,temp,res);
             temp[0] = temp[0] - root.right.val;
         }
+
+    }
+
+    /**
+     * 路径总和 有返回值递归函数，当无需搜索整个数的时候采用
+     * @param root
+     * @param sum
+     * @param temp
+     * @return
+     */
+    public static boolean backPathSum(TreeNode root,int sum,int[] temp){
+        if (root == null){
+            return false;
+        }
+
+        temp[0] = temp[0] + root.val;
+        if (temp[0] == sum && root.left == null && root.right == null){
+            return true;
+        }
+
+        if (root.left != null){
+            if (backPathSum(root.left,sum,temp)){
+                return true;
+            }
+            temp[0] = temp[0] - root.left.val;
+        }
+
+        if (root.right != null){
+            if (backPathSum(root.right,sum,temp)){
+                return true;
+            }
+            temp[0] = temp[0] - root.right.val;
+        }
+        return false;
 
     }
 
