@@ -11,9 +11,13 @@ import java.util.Map;
  */
 public class App {
     public static void main(String[] args){
-        int[] array = new int[]{1,17,5,10,13,15,10,5,16,8};
+        //int[] array = new int[]{1,17,5,10,13,15,10,5,16,8};
         //int rs = wiggleMaxLength(array);
-        int rs = lengthOfLongestSubstring("abba");
+        //int rs = lengthOfLongestSubstring("abba");
+        //String[] array = new String[]{"10", "0001", "111001", "1", "0"};
+        //int rs = findMaxForm(array,5,3);
+        int[] a = new int[]{1,3,6,7,9,4,10,5,6};
+        int rs = lengthOfLIS(a);
         System.out.println(rs);
     }
 
@@ -76,6 +80,81 @@ public class App {
             map.put(v,i);
             i++;
         }
+        return max;
+    }
+
+
+    /**
+     * 474 1和0
+     * @param strs
+     * @param m
+     * @param n
+     * @return
+     */
+    public static int findMaxForm(String[] strs, int m, int n){
+        //状态转移，之前子集最多加上当前字符串即当前字符串下最大
+        // 0~(i-1)背包能放下的最大值 加上i能满足背包容量，即0~i背包能放下的最大值，一步一步知道整个数组
+        int[][][] dp = new int[strs.length+1][m+1][n+1];
+
+        for (int i = 1; i<=strs.length;i++){
+            int[] count = strCount(strs[i-1]);
+            for (int j = 0; j<=m;j++){
+                for (int k = 0;k<=n;k++){
+                    //当前字符串是否大于背包容量，如果大于背包容量(背包放不下了)，则继承之前子集的最大数量
+                    if (count[0]>j || count[1]>k){
+                        dp[i][j][k] = dp[i-1][j][k];
+                    }else {
+                        //如果当前字符串可以放进背包容量，则状态转移,之前子集最大的数量和
+                        //之前子集减去当前字符串容量的加1（相当于把当前字符串放到之前子集中组成新的子集）比较最大值
+                        dp[i][j][k] = Math.max(dp[i-1][j][k],dp[i-1][j-count[0]][k-count[1]]+1);
+                    }
+                }
+            }
+        }
+
+        return dp[strs.length][m][n];
+    }
+
+    public static int[] strCount(String s){
+        int[] temp = new int[2];
+        for (int i = 0;i<s.length();i++){
+            if (s.charAt(i)=='0'){
+                temp[0]++;
+            }
+            if (s.charAt(i) == '1'){
+                temp[1]++;
+            }
+        }
+        return temp;
+    }
+
+    /**
+     * 300最长递增子序列
+     * @param nums
+     * @return
+     */
+    public static int lengthOfLIS(int[] nums) {
+        //使用动态规划，dp是以i结尾的数组子集有最大的递增子序列
+        //转换方程是
+        // dp[i] 需要和 nums[0]~nums[i-1]进行比较，
+        //当nums[i] > nums[j], dp[i]=Math.max(dp[i],dp[j]+1)
+        //1,3,6,7,9,4,10,5,6
+        int max = 1;
+        int[] dp = new int[nums.length];
+        for (int i = 0;i<nums.length;i++){
+            dp[i] = 1;
+            if (i<1){
+                continue;
+            }
+
+            for (int j = 0;j<i;j++){
+                if (nums[i]>nums[j]){
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+                    max = Math.max(max,dp[i]);
+                }
+            }
+        }
+
         return max;
     }
 

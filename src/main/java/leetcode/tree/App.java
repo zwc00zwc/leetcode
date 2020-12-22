@@ -1,6 +1,7 @@
 package leetcode.tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
@@ -36,12 +37,18 @@ public class App {
         treeNode.right = treeNode8;
 
 
-        TreeNode a = new TreeNode(0);
-        TreeNode b = new TreeNode(1);
-        TreeNode c = new TreeNode(1);
-        a.right = b;
-        a.left = c;
-        hasPathSum(a,0);
+        TreeNode a = new TreeNode(1);
+        TreeNode b = new TreeNode(2);
+        TreeNode c = new TreeNode(3);
+        TreeNode d = new TreeNode(4);
+        TreeNode e = new TreeNode(5);
+
+        c.left = d;
+        c.right = e;
+        a.left = b;
+        a.right = c;
+        zigzagLevelOrder(a);
+        //hasPathSum(a,0);
         //int count = countNodes(treeNode);
         //List<Integer> list = postorderTraversal(treeNode);
         //System.out.println(count);
@@ -202,5 +209,53 @@ public class App {
             targe[0] = targe[0] - root.right.val;
             list.remove(list.size()-1);
         }
+    }
+
+
+    /**
+     * 103. 二叉树的锯齿形层序遍历
+     * @param root
+     * @return
+     */
+    public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        //定义左边处理栈
+        Stack<TreeNode> leftStack = new Stack<>();
+        //定义右边处理栈
+        Stack<TreeNode> rightStack = new Stack<>();
+        List<List<Integer>> lists = new ArrayList<>();
+        List<Integer> list = null;
+        leftStack.add(root);
+        while (!leftStack.isEmpty() || !rightStack.isEmpty()){
+            list = new ArrayList<>();
+            //从左读到右
+            while (!leftStack.isEmpty()){
+                TreeNode temp = leftStack.pop();
+                if (temp == null){
+                    continue;
+                }
+                list.add(temp.val);
+                rightStack.push(temp.left);
+                rightStack.push(temp.right);
+            }
+            if (list != null && list.size()>0){
+                lists.add(list);
+                continue;
+            }
+            //从右读到左
+            while (!rightStack.isEmpty()){
+                TreeNode temp = rightStack.pop();
+                if (temp == null){
+                    continue;
+                }
+                list.add(temp.val);
+                leftStack.push(temp.right);
+                leftStack.push(temp.left);
+            }
+            if (list != null && list.size()>0){
+                lists.add(list);
+                continue;
+            }
+        }
+        return lists;
     }
 }
