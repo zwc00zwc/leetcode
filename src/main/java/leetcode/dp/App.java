@@ -22,39 +22,6 @@ public class App {
     }
 
     /**
-     * 动态规划摇摆数组
-     * @param nums
-     * @return
-     */
-    public static int wiggleMaxLength(int[] nums) {
-        if (nums.length <= 2){
-            return nums.length;
-        }
-        int maxLength = 1;
-        boolean[][] pool = new boolean[nums.length][nums.length];
-        for (int i = 1;i<nums.length;i++){
-            for (int j = 0;j<=i;j++){
-                if (i - j <= 1){
-                    pool[j][i] = true;
-                }else {
-                    if (nums[i]>nums[i-1] && nums[j+1]>nums[j]){
-                        pool[j][i] = pool[j+1][i-1];
-                    }
-                    if (nums[i]<nums[i-1] && nums[j+1]<nums[j]){
-                        pool[j][i] = pool[j+1][i-1];
-                    }
-                }
-                if (pool[j][i]){
-                    if (i - j +1 > maxLength){
-                        maxLength = i - j +1;
-                    }
-                }
-            }
-        }
-        return maxLength;
-    }
-
-    /**
      * 最长不重复字符 双指针窗口
      * @param s
      * @return
@@ -158,4 +125,33 @@ public class App {
         return max;
     }
 
+    /**
+     * 376. 摆动序列 dp解法
+     * @param nums
+     * @return
+     */
+    public static int wiggleMaxLength(int[] nums) {
+        //需要构成摇摆，就需要上升和下降，当num[i]>num[i-1],即指针i是处于上升时
+        //该指针之前最大的摆动序列是最大的下降序列+1，反之就是处于下降该指针之前的
+        //最大摆动序列是最大的上升序列+1
+        if (nums.length<2){
+            return nums.length;
+        }
+        int up = 1;
+        int down = 1;
+
+        for (int i = 0;i<nums.length;i++){
+            if (i == 0){
+                continue;
+            }
+            if (nums[i]>nums[i-1]){
+                up = down+1;
+            }
+            if (nums[i]<nums[i-1]){
+                down = up+1;
+            }
+        }
+
+        return Math.max(up,down);
+    }
 }
