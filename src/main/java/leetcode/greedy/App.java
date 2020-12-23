@@ -54,4 +54,18 @@ public class App {
         }
         return res;
     }
+
+    /**
+     * 135. 分发糖果
+     * @param ratings
+     * @return
+     */
+    public int candy(int[] ratings) {
+        int res = 0;
+        int temp = 0;
+        for (int i = 0;i<ratings.length;i++){
+
+        }
+        return 0;
+    }
 }

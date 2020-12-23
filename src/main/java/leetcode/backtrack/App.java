@@ -14,9 +14,19 @@ public class App {
         //removeDuplicates("abbaca");
 
 //        List<List<String>> res = solveNQueens(4);
-        int[] coins = new int[]{2};
-        int res = coinChange(coins,3);
+        //int[] coins = new int[]{2};
+        //int res = coinChange(coins,3);
         //int count = numberOfMatches(7);
+        int res = 0;
+        res = numWays(1);
+        System.out.println(res);
+        res = numWays(2);
+        System.out.println(res);
+        res = numWays(3);
+        System.out.println(res);
+        res = numWays(4);
+        System.out.println(res);
+        res = numWays(5);
         System.out.println(res);
     }
 
@@ -268,4 +278,31 @@ public class App {
         return dp[amount];
     }
 
+    /**
+     * 青蛙跳台阶问题 回溯法可惜超时了
+     * @param n
+     * @return
+     */
+    public static int numWays(int n) {
+        int[] temp = new int[1];
+        int[] res = new int[1];
+        backNumWays(temp,n,res);
+        return res[0];
+    }
+
+    public static void backNumWays(int[] temp,int n,int[] res){
+        if (temp[0] == n){
+            res[0]++;
+            return;
+        }
+        if (temp[0] > n){
+            return;
+        }
+
+        for (int i = 1;i<3;i++){
+            temp[0] = temp[0] + i;
+            backNumWays(temp,n,res);
+            temp[0] = temp[0] - i;
+        }
+    }
 }

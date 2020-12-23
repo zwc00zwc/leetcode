@@ -258,4 +258,49 @@ public class App {
         }
         return lists;
     }
+
+    /**
+     * 700. 二叉搜索树中的搜索
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode searchBST(TreeNode root, int val) {
+        while (root !=null){
+            if (val == root.val){
+                break;
+            }
+            if (val >root.val){
+                root = root.right;
+                continue;
+            }
+            if (val <root.val){
+                root = root.left;
+                continue;
+            }
+        }
+        return root;
+    }
+
+    /**
+     * 617. 合并二叉树
+     * @param t1
+     * @param t2
+     * @return
+     */
+    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
+        //确定终止条件
+        if (t1 == null){
+            return t2;
+        }
+        if (t2 == null){
+            return t1;
+        }
+        //单层递归逻辑
+        t1.val = t1.val+t2.val;
+        t1.left = mergeTrees(t1.left,t2.left);
+        t1.right = mergeTrees(t1.right,t2.right);
+        //确定返回值
+        return t1;
+    }
 }

@@ -9,9 +9,12 @@ public class App {
         int[] array = new int[]{3,1,6,4,7,4,5};
         //kuickSort(array,0,array.length - 1);
 
-        int[][] r = new int[][]{{1,2,3},{4,5,6}};
-        transpose(r);
+//        int[][] r = new int[][]{{1,2,3},{4,5,6}};
+//        transpose(r);
 
+        int[] a1 = new int[]{1,2,3,0,0,0};
+        int[] a2 = new int[]{2,5,6};
+        merge(a1,3,a2,3);
 //        mergeSort(array,0,6);
 //        for (int i = 0;i<array.length;i++){
 //            System.out.println(array[i]);
@@ -196,5 +199,40 @@ public class App {
             }
         }
         return res;
+    }
+
+    /**
+     * 面试题 10.01. 合并排序的数组
+     * @param A
+     * @param m
+     * @param B
+     * @param n
+     */
+    public static void merge(int[] A, int m, int[] B, int n) {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int[] array = new int[m+n];
+        while (j<m && k<n){
+            if (A[j]<B[k]){
+                array[i] = A[j];
+                j++;
+            }else {
+                array[i] = B[k];
+                k++;
+            }
+            i++;
+        }
+
+        while (j<m){
+            array[i++] = A[j++];
+        }
+        while (k<n){
+            array[i++] = B[k++];
+        }
+
+        for (int c = 0;c<array.length;c++){
+            A[c] = array[c];
+        }
     }
 }
