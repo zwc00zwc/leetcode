@@ -303,4 +303,26 @@ public class App {
         //确定返回值
         return t1;
     }
+
+    /**
+     * 98. 验证二叉搜索树
+     * 给每个节点校验上限和下限
+     * @param root
+     * @return
+     */
+    public boolean isValidBST(TreeNode root) {
+        return backIsValidBST(root,Long.MIN_VALUE,Long.MAX_VALUE);
+    }
+
+    public boolean backIsValidBST(TreeNode root,long min,long max){
+        if (root == null){
+            return true;
+        }
+
+        if (root.val<=min || root.val>=max){
+            return false;
+        }
+
+        return backIsValidBST(root.left,min,root.val) && backIsValidBST(root.right,root.val,max);
+    }
 }
