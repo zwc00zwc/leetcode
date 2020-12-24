@@ -6,8 +6,10 @@ package leetcode.greedy;
  */
 public class App {
     public static void main(String[] args){
-        int[] array = new int[]{1,7,4,9,2,5};
-        wiggleMaxLength(array);
+        //int[] array = new int[]{1,7,4,9,2,5};
+        int[] array = new int[]{1,0,2};
+        //wiggleMaxLength(array);
+        candy(array);
     }
 
     /**
@@ -57,15 +59,37 @@ public class App {
 
     /**
      * 135. 分发糖果
+     * 贪心算法，通过局部最优解推算出全局最优解，该题局部最优解释顺序走大的比小的多
+     * 先从左到右走一遍，在从右到左走一遍，得到全局最优解
      * @param ratings
      * @return
      */
-    public int candy(int[] ratings) {
-        int res = 0;
-        int temp = 0;
-        for (int i = 0;i<ratings.length;i++){
-
+    public static int candy(int[] ratings) {
+        if (ratings.length<2){
+            return 1;
         }
-        return 0;
+
+        int[] res = new int[ratings.length];
+        res[0]=1;
+        for (int i= 1;i<ratings.length;i++){
+            if (ratings[i]>ratings[i-1]){
+                res[i] = res[i-1]+1;
+            }else {
+                res[i] = 1;
+            }
+        }
+
+        for (int k= ratings.length-2;k>=0;k--){
+            if (ratings[k]>ratings[k+1]){
+                res[k] = Math.max(res[k],res[k+1]+1);
+            }
+        }
+
+        int r = 0;
+        for (int i = 0;i<res.length;i++){
+            r = r+res[i];
+        }
+
+        return r;
     }
 }
