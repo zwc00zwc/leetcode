@@ -71,6 +71,24 @@ public class App {
     }
 
     /**
+     * 剑指 Offer 27. 二叉树的镜像
+     * @param root
+     * @return
+     */
+    public TreeNode mirrorTree(TreeNode root) {
+        if (root == null){
+            return root;
+        }
+        TreeNode left = root.left;
+        root.left = root.right;
+        root.right = left;
+
+        root.left = mirrorTree(root.left);
+        root.right = mirrorTree(root.right);
+        return root;
+    }
+
+    /**
      * 后续遍历
      * @param root
      * @return
@@ -498,4 +516,26 @@ public class App {
 
         return root;
     }
+
+    /**
+     * 108. 将有序数组转换为二叉搜索树
+     * @param nums
+     * @return
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return backSortedArrayToBST(nums,0,nums.length-1);
+    }
+
+    public TreeNode backSortedArrayToBST(int[] nums,int start,int end){
+        if (start>end){
+            return null;
+        }
+        //将中间点作为节点
+        int mid = start + (end - start) / 2;
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = backSortedArrayToBST(nums,start,mid-1);
+        root.right = backSortedArrayToBST(nums,mid+1,end);
+        return root;
+    }
+
 }
