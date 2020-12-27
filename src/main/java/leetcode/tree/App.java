@@ -413,4 +413,89 @@ public class App {
         return root;
     }
 
+    /**
+     * 701. 二叉搜索树中的插入操作
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        //如果未null了进行赋值
+        if (root == null){
+            return new TreeNode(val);
+        }
+        //二分法发进行插入值
+        if (root.val>val){
+            root.left = insertIntoBST(root.left,val);
+        }else {
+            root.right = insertIntoBST(root.right,val);
+        }
+        return root;
+    }
+
+    /**
+     * 450. 删除二叉搜索树中的节点
+     * @param root
+     * @param key
+     * @return
+     */
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null){
+            return root;
+        }
+        if (root.val == key){
+            //左子树为空，直接返回右子树
+            if (root.left == null){
+                return root.right;
+            }
+            //右子树为空
+            if (root.right == null){
+                return root.left;
+            }
+            //左右子树都不为空,root的左子树要放到右子树最左的子树下
+            if (root.left != null && root.right != null){
+                TreeNode temp = root.right;
+                while (temp.left!=null){
+                    temp = temp.left;
+                }
+                temp.left = root.left;
+                return root.right;
+            }
+        }
+        if (root.val>key){
+            root.left = deleteNode(root.left,key);
+        }else {
+            root.right = deleteNode(root.right,key);
+        }
+        return root;
+    }
+
+    /**
+     * 669. 修剪二叉搜索树
+     * @param root
+     * @param low
+     * @param high
+     * @return
+     */
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if (root == null){
+            return root;
+        }
+
+        //如果当前root值比low小，返回root.right,但是root.right中也会有比low小的
+        //需要进行处理trimBST(root.right)
+        if (root.val<low){
+            return trimBST(root.right,low,high);
+        }
+        //如果当前root值比high大，返回root.left,但是root.left中也会有比high大的
+        //需要进行处理trimBST(root.left)
+        if (root.val>high){
+            return trimBST(root.left,low,high);
+        }
+
+        root.left = trimBST(root.left,low,high);
+        root.right = trimBST(root.right,low,high);
+
+        return root;
+    }
 }
