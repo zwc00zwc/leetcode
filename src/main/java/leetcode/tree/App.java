@@ -37,23 +37,44 @@ public class App {
         treeNode.right = treeNode8;
 
 
-        TreeNode a = new TreeNode(1);
-        TreeNode b = new TreeNode(2);
-        TreeNode c = new TreeNode(3);
-        TreeNode d = new TreeNode(4);
-        TreeNode e = new TreeNode(5);
+        TreeNode a = new TreeNode(5);
+        TreeNode b = new TreeNode(4);
+        TreeNode c = new TreeNode(7);
 
-        c.left = d;
-        c.right = e;
-        a.left = b;
-        a.right = c;
-        zigzagLevelOrder(a);
+
+        TreeNode root = new TreeNode(3);
+        TreeNode r5 = new TreeNode(5);
+        TreeNode r1 = new TreeNode(1);
+        root.left = r5;
+        root.right = r1;
+        TreeNode r6 = new TreeNode(6);
+        TreeNode r2 = new TreeNode(2);
+        r5.left = r6;
+        r5.right = r2;
+        TreeNode r7 = new TreeNode(7);
+        TreeNode r4 = new TreeNode(4);
+        r2.left = r7;
+        r2.right = r4;
+        TreeNode r0 = new TreeNode(7);
+        TreeNode r8 = new TreeNode(7);
+        r1.left = r0;
+        r1.right = r8;
+
+        TreeNode res = lowestCommonAncestor(root,r5,r1);
+        //System.out.println(res.val);
+        //getMinimumDifference(a);
+        //zigzagLevelOrder(a);
         //hasPathSum(a,0);
         //int count = countNodes(treeNode);
         //List<Integer> list = postorderTraversal(treeNode);
         //System.out.println(count);
     }
 
+    /**
+     * 后续遍历
+     * @param root
+     * @return
+     */
     public static List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         back(list,root);
@@ -325,4 +346,71 @@ public class App {
 
         return backIsValidBST(root.left,min,root.val) && backIsValidBST(root.right,root.val,max);
     }
+
+    /**
+     * 530.二叉搜索树的最小绝对差
+     * @param root
+     * @return
+     */
+    public static int getMinimumDifference(TreeNode root) {
+        int[] res = new int[1];
+        res[0] = Integer.MAX_VALUE;
+        backGetMinimumDifference(root,Integer.MIN_VALUE,Integer.MAX_VALUE,res);
+        return res[0];
+    }
+
+    public static void backGetMinimumDifference(TreeNode root,int min,int max, int[] res){
+        if (root == null){
+            return;
+        }
+
+        if (min > Integer.MIN_VALUE){
+            res[0] = Math.min(res[0],root.val - min);
+        }
+        if (max<Integer.MAX_VALUE){
+            res[0] = Math.min(res[0],max - root.val);
+        }
+
+        backGetMinimumDifference(root.left,min,root.val,res);
+        backGetMinimumDifference(root.right,root.val,max,res);
+    }
+
+
+    /**
+     * 235. 二叉搜索树的最近公共祖先
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        //root为null说明该分支没有公共祖先
+        if (root == null){
+            return null;
+        }
+        //如果 root==p说明该分支的p q祖先为p
+        //如果 root==q说明该分支的p q祖先为p
+        if (root == p || root == q){
+            return root;
+        }
+        //寻找root的左分支和有分支的p q祖先
+        TreeNode left = lowestCommonAncestor(root.left,p,q);
+        TreeNode right = lowestCommonAncestor(root.right,p,q);
+
+        //如果做分支祖先和有分支祖先都有值说明pq在root两侧，则root为最小公共祖先
+        if (left != null && right != null){
+            return root;
+        }
+        //如果左分支为空，则说明左分支没有pq,pq都在root的右分支，返回右分支的最小公共祖先
+        if (left == null){
+            return right;
+        }
+        //如果右分支为空，则说明右分支没有pq,pq都在root的左分支，返回左分支的最小公共祖先
+        if (right == null){
+            return left;
+        }
+        //剩下的就剩都为空了，直接返回root
+        return root;
+    }
+
 }

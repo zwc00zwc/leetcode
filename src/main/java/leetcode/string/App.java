@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class App {
     public static void main(String[] args){
-
+        isIsomorphic("ab","aa");
     }
 
     /**
@@ -58,5 +58,32 @@ public class App {
             }
         }
         return res;
+    }
+
+    /**
+     * 205. 同构字符串
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean isIsomorphic(String s, String t) {
+        Map<Character,Character> smap = new HashMap<>();
+        Map<Character,Character> tmap = new HashMap<>();
+        for (int i = 0;i<s.length();i++){
+            if (smap.containsKey(s.charAt(i)) != tmap.containsKey(t.charAt(i))){
+                return false;
+            }
+            if (!smap.containsKey(s.charAt(i)) && !tmap.containsKey(t.charAt(i))){
+                smap.put(s.charAt((i)),t.charAt(i));
+                tmap.put(t.charAt((i)),s.charAt(i));
+                continue;
+            }
+            char sc = smap.get(s.charAt(i));
+            char tc = tmap.get(t.charAt(i));
+            if (sc != t.charAt(i) || tc != s.charAt(i)){
+                return false;
+            }
+        }
+        return true;
     }
 }

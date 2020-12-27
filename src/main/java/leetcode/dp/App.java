@@ -1,6 +1,7 @@
 package leetcode.dp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,11 @@ public class App {
         //int rs = lengthOfLongestSubstring("abba");
         //String[] array = new String[]{"10", "0001", "111001", "1", "0"};
         //int rs = findMaxForm(array,5,3);
-        int[] a = new int[]{1,3,6,7,9,4,10,5,6};
-        int rs = lengthOfLIS(a);
+        //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
+        int[] a = new int[]{10,9,8,7};
+        int[] b = new int[]{5,6,7,8};
+        int rs = findContentChildren(a,b);
+        //int rs = lengthOfLIS(a);
         System.out.println(rs);
     }
 
@@ -172,5 +176,31 @@ public class App {
         }
 
         return dp[n];
+    }
+
+    /**
+     * 455. 分发饼干
+     * 贪心算法，最大的饼干给胃口最大的孩子
+     * @param g
+     * @param s
+     * @return
+     */
+    public static int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int res = 0;
+        int k = g.length-1;
+
+        for (int i = s.length-1;i>=0;i--){
+            while (k>=0){
+                if (s[i]>=g[k]){
+                    res++;
+                    k--;
+                    break;
+                }
+                k--;
+            }
+        }
+        return res;
     }
 }
