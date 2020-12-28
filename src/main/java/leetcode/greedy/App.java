@@ -1,5 +1,7 @@
 package leetcode.greedy;
 
+import java.util.Arrays;
+
 /**
  * @Author: siskin_zh
  * @Date: 2020 2020-12-22 14:55
@@ -7,9 +9,10 @@ package leetcode.greedy;
 public class App {
     public static void main(String[] args){
         //int[] array = new int[]{1,7,4,9,2,5};
-        int[] array = new int[]{1,0,2};
+        int[] array = new int[]{1,2,4,2,5,7,2,4,9,0};
         //wiggleMaxLength(array);
-        candy(array);
+        int[][] a = new int[][]{{10,16},{2,8},{1,6},{7,12}};
+        findMinArrowShots(a);
     }
 
     /**
@@ -91,5 +94,71 @@ public class App {
         }
 
         return r;
+    }
+
+    /**
+     * 452. 用最少数量的箭引爆气球
+     * @param points
+     * @return
+     */
+    public static int findMinArrowShots(int[][] points) {
+        if (points.length<1){
+            return 0;
+        }
+        if (points.length<2){
+            return 1;
+        }
+        //对数组进行排序，按左边界从小到大即可
+        Arrays.sort(points,(a, b) -> a[0] > b[0] ? 1 : -1);
+        int[] temp = new int[2];
+        int[] next = new int[2];
+        int m = 0;
+        for (int i = 0;i<points.length;i++){
+            if (points[i] == null){
+                continue;
+            }
+            temp = points[i];
+            points[i] = null;
+            for (int j = i+1;j<points.length;j++){
+                if (points[j] == null){
+                    continue;
+                }
+                next = points[j];
+                //计算该区间与箭区间的交集，如果交集为空说明没有交集，
+                //有交集说明存在箭的区域，同时该位置置位null
+                int[] sub = getSub(temp,next);
+                if (sub == null){
+                    continue;
+                }
+                temp = sub;
+                points[j] = null;
+            }
+            m++;
+        }
+        return m;
+    }
+
+    /**
+     * 计算每次交集
+     * @param a
+     * @param b
+     * @return
+     */
+    public static int[] getSub(int[] a,int[] b){
+        if (a[0]<=b[0] && a[1]>=b[1]){
+            return b;
+        }
+        if (b[0]<=a[0] && b[1]>=a[1]){
+            return a;
+        }
+
+        if (a[0]<=b[1] && a[1] >=b[1]){
+            return new int[]{a[0],b[1]};
+        }
+
+        if (b[0]<=a[1] && b[1] >= a[1]){
+            return new int[]{b[0],a[1]};
+        }
+        return null;
     }
 }
