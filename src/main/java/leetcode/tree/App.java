@@ -523,18 +523,18 @@ public class App {
      * @return
      */
     public TreeNode sortedArrayToBST(int[] nums) {
-        return backSortedArrayToBST(nums,0,nums.length-1);
+        return binaryToBST(nums,0,nums.length-1);
     }
 
-    public TreeNode backSortedArrayToBST(int[] nums,int start,int end){
+    public TreeNode binaryToBST(int[] nums,int start,int end){
         if (start>end){
             return null;
         }
-        //将中间点作为节点
-        int mid = start + (end - start) / 2;
+        //中间节点作为root
+        int mid = (start + end + 1) /2;
         TreeNode root = new TreeNode(nums[mid]);
-        root.left = backSortedArrayToBST(nums,start,mid-1);
-        root.right = backSortedArrayToBST(nums,mid+1,end);
+        root.left = binaryToBST(nums,start,mid-1);
+        root.right = binaryToBST(nums,mid+1,end);
         return root;
     }
 
