@@ -538,4 +538,51 @@ public class App {
         return root;
     }
 
+    /**
+     * 94. 二叉树的中序遍历
+     * @param root
+     * @return
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        backInorderTraversal(root,res);
+        return res;
+    }
+
+    public void backInorderTraversal(TreeNode root, List<Integer> res){
+        if (root == null){
+            return;
+        }
+        backInorderTraversal(root.left,res);
+        res.add(root.val);
+        backInorderTraversal(root.right,res);
+    }
+
+    /**
+     * 102. 二叉树的层序遍历
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> temp = null;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()){
+            temp = new ArrayList<>();
+            int count = queue.size();
+            for (int i = 0;i<count;i++){
+                TreeNode treeNode = queue.poll();
+                if (treeNode!=null){
+                    temp.add(treeNode.val);
+                    queue.add(treeNode.left);
+                    queue.add(treeNode.right);
+                }
+            }
+            if (temp.size()>0){
+                res.add(temp);
+            }
+        }
+        return res;
+    }
 }
