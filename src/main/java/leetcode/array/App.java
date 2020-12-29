@@ -1,5 +1,9 @@
 package leetcode.array;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Hello world!
  *
@@ -14,7 +18,10 @@ public class App {
 
         int[] a1 = new int[]{1,2,3,0,0,0};
         int[] a2 = new int[]{2,5,6};
-        merge(a1,3,a2,3);
+        //merge(a1,3,a2,3);
+
+        int[] a = new int[]{0,0,0};
+        List<List<Integer>> res = threeSum(a);
 //        mergeSort(array,0,6);
 //        for (int i = 0;i<array.length;i++){
 //            System.out.println(array[i]);
@@ -234,5 +241,66 @@ public class App {
         for (int c = 0;c<array.length;c++){
             A[c] = array[c];
         }
+    }
+
+    /**
+     * 15. 三数之和
+     * 利用双指针向中间靠拢的方法进行解法
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> threeSum(int[] nums) {
+        //对数组进行排序
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> list = null;
+        for (int i = 0;i<nums.length;i++){
+            //数组已经是排序过的，如果指针位置值已经大于0，说明后面所有的和都大于0了，直接break
+            if (nums[i]>0){
+                break;
+            }
+            //判断值是否相同
+            if (i>0 && nums[i] == nums[i-1]){
+                continue;
+            }
+            //定义左右指针
+            int j = i+1;
+            int k = nums.length -1;
+            //左指针必须小于右指针
+            while (j<k){
+                list = new ArrayList<>();
+                //排除相同的值
+                if (j>i+1 && nums[j]==nums[j-1]){
+                    j++;
+                    continue;
+                }
+                //排除相同的值
+                if (k < nums.length -1 && nums[k]==nums[k+1]){
+                    k--;
+                    continue;
+                }
+                //数组是排序过的，大于0了那就所有都大于0了
+                if (nums[i]+nums[j]>0){
+                    break;
+                }
+                //和大于0，右指针太大，往中间靠，减小一点
+                if (nums[i]+nums[j]+nums[k] > 0){
+                    k--;
+                    continue;
+                }
+                //和大于0，左指针太小，往中间靠，增大一点
+                if (nums[i]+nums[j]+nums[k] < 0){
+                    j++;
+                    continue;
+                }
+                list.add(nums[i]);
+                list.add(nums[j]);
+                list.add(nums[k]);
+                res.add(list);
+                k--;
+                j++;
+            }
+        }
+        return res;
     }
 }
