@@ -20,7 +20,9 @@ public class App {
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
         int[] a = new int[]{10,9,8,7};
         int[] b = new int[]{5,6,7,8};
-        int rs = findContentChildren(a,b);
+        int[] c = new int[]{7,6,5,4,3,2,1};
+        int rs = maxProfit(c);
+        //int rs = findContentChildren(a,b);
         //int rs = lengthOfLIS(a);
         System.out.println(rs);
     }
@@ -200,6 +202,32 @@ public class App {
                 }
                 k--;
             }
+        }
+        return res;
+    }
+
+    /**
+     * 121. 买卖股票的最佳时机
+     * 动态规划解法利用两个动态数组记录0-i的最大收益和0-i的最小值
+     * @param prices
+     * @return
+     */
+    public static int maxProfit(int[] prices) {
+        int res = 0;
+        if (prices.length<2){
+            return 0;
+        }
+        //存储0-i的最大收益 转换方程是 0-i最大收益 = 0-(i-1)最大收益 和 i-min(0-i)大的值
+        int[] dp = new int[prices.length];
+        //存储0-i的最小值 转换方程是 0-i的最小值 = 0-(i-1)最小值 和当前值小的值
+        int[] mimDp = new int[prices.length];
+        mimDp[0] = prices[0];
+        for (int i = 1;i<prices.length;i++){
+            //0-i最小值转换方程
+            mimDp[i] = Math.min(mimDp[i-1],prices[i]);
+            //0-i最大收益转换方程
+            dp[i] = Math.max(dp[i-1],prices[i] - mimDp[i]);
+            res = Math.max(res,dp[i]);
         }
         return res;
     }

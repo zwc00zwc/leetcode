@@ -17,17 +17,9 @@ public class App {
         //int[] coins = new int[]{2};
         //int res = coinChange(coins,3);
         //int count = numberOfMatches(7);
+        int[] array = new int[]{2,3,6,7};
+        combinationSum(array,7);
         int res = 0;
-        res = numWays(1);
-        System.out.println(res);
-        res = numWays(2);
-        System.out.println(res);
-        res = numWays(3);
-        System.out.println(res);
-        res = numWays(4);
-        System.out.println(res);
-        res = numWays(5);
-        System.out.println(res);
     }
 
     /**
@@ -303,6 +295,50 @@ public class App {
             temp[0] = temp[0] + i;
             backNumWays(temp,n,res);
             temp[0] = temp[0] - i;
+        }
+    }
+
+    /**
+     * 39. 组合总和
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<Integer> temp = new ArrayList<>();
+        int tempSum = 0;
+        List<List<Integer>> res = new ArrayList<>();
+        backCombinationSum(candidates,0,target,temp,tempSum,res);
+        return res;
+    }
+
+    public static void backCombinationSum(int[] candidates,int startIndex,int target,List<Integer> temp,int tempSum,List<List<Integer>> res){
+        //结束条件
+        if (tempSum > target){
+            return;
+        }
+
+        if (tempSum == target){
+            List<Integer> a = new ArrayList<>();
+            a.addAll(temp);
+            res.add(a);
+            return;
+        }
+        //单层循环逻辑
+        for (int i = startIndex;i<candidates.length;i++){
+            if (candidates[i]>target){
+                continue;
+            }
+            //加入值
+            temp.add(candidates[i]);
+            tempSum = tempSum + candidates[i];
+            //注意i，因为不能重复，所以后面的遍历都需要从当前指针开始
+            backCombinationSum(candidates,i,target,temp,tempSum,res);
+            //弹出
+            if (temp.size()>0){
+                temp.remove(temp.size()-1);
+                tempSum = tempSum - candidates[i];
+            }
         }
     }
 }
