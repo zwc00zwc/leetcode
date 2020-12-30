@@ -401,4 +401,56 @@ public class App {
         }
         return root.next;
     }
+
+    /**
+     * 23. 合并K个升序链表
+     * 递归解法，每次合并两个直到所有都被合并完
+     * @param lists
+     * @return
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length<1){
+            return null;
+        }
+        //数组中只有一个说明已经合并完了
+        if (lists.length==1){
+            return lists[0];
+        }
+        ListNode f = lists[0];
+        ListNode s = lists[1];
+
+        //合并两个有序列表
+        ListNode temp = new ListNode(0);
+        ListNode res = temp;
+        while (f!=null && s!=null){
+            if (f.val<s.val){
+                temp.next = new ListNode(f.val);
+                f = f.next;
+            }else {
+                temp.next = new ListNode(s.val);
+                s = s.next;
+            }
+            temp = temp.next;
+        }
+        while (f!=null){
+            temp.next = new ListNode(f.val);
+            f = f.next;
+            temp = temp.next;
+        }
+        while (s!=null){
+            temp.next = new ListNode(s.val);
+            s = s.next;
+            temp = temp.next;
+        }
+        //重新构造数组，数量-1
+        ListNode[] tempList = new ListNode[lists.length-1];
+        int i = 0;
+        int k = 2;
+        while (i<tempList.length-1){
+            tempList[i++] = lists[k++];
+        }
+        tempList[tempList.length-1] = res.next;
+        //递归
+        return mergeKLists(tempList);
+    }
 }

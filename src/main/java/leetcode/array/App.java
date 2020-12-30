@@ -303,4 +303,40 @@ public class App {
         }
         return res;
     }
+
+    /**
+     * 1046. 最后一块石头的重量
+     * @param stones
+     * @return
+     */
+    public int lastStoneWeight(int[] stones) {
+        //递归中止条件
+        if (stones.length < 1){
+            return 0;
+        }
+        if (stones.length == 1){
+            return stones[0];
+        }
+        //排序
+        Arrays.sort(stones);
+        //计算最大的两个石头碰撞结果
+        int temp = stones[stones.length-1]-stones[stones.length-2];
+        //进行新数组组装
+        if (temp == 0){
+            int[] tempstones = new int[stones.length-2];
+            for (int i = 0;i<stones.length-2;i++){
+                tempstones[i] = stones[i];
+            }
+            stones = tempstones;
+        }else {
+            int[] tempstones = new int[stones.length-1];
+            for (int i = 0;i<stones.length-2;i++){
+                tempstones[i] = stones[i];
+            }
+            tempstones[tempstones.length-1] = temp;
+            stones = tempstones;
+        }
+        //递归
+        return lastStoneWeight(stones);
+    }
 }
