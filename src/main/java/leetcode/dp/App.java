@@ -21,7 +21,7 @@ public class App {
         int[] a = new int[]{10,9,8,7};
         int[] b = new int[]{5,6,7,8};
         int[] c = new int[]{7,6,5,4,3,2,1};
-        int rs = maxProfit(c);
+        int rs = countSubstrings("aaa");
         //int rs = findContentChildren(a,b);
         //int rs = lengthOfLIS(a);
         System.out.println(rs);
@@ -228,6 +228,41 @@ public class App {
             //0-i最大收益转换方程
             dp[i] = Math.max(dp[i-1],prices[i] - mimDp[i]);
             res = Math.max(res,dp[i]);
+        }
+        return res;
+    }
+
+    /**
+     * 647. 回文子串
+     * 动态规划解法
+     * @param s
+     * @return
+     */
+    public static int countSubstrings(String s) {
+        int res = 0;
+        //定义动态数组指针之间是否为回文子串
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        for (int i = 0;i<s.length();i++){
+            dp[i][i] = true;
+            res++;
+            for (int k = 0;k<i;k++){
+                //字符串相当需要判断是否是回文子串，不相等直接不是回文子串
+                if (s.charAt(k) == s.charAt(i)){
+                    //动态转换方程，dp[k][i] = dp[k+1][i-1]
+                    //但需要一个条件k和i之间需要有字符串，即i-k>1
+                    if (i-k>1){
+                        dp[k][i] = dp[k+1][i-1];
+                    }else {
+                        dp[k][i] = true;
+                    }
+                }else {
+                    dp[k][i] = false;
+                }
+                //是回文子串+1
+                if (dp[k][i]){
+                    res++;
+                }
+            }
         }
         return res;
     }

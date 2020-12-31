@@ -13,6 +13,8 @@ public class App {
         //wiggleMaxLength(array);
         int[][] a = new int[][]{{10,16},{2,8},{1,6},{7,12}};
         findMinArrowShots(a);
+        int[] b = new int[]{5,5,5,10,20};
+        lemonadeChange(b);
     }
 
     /**
@@ -160,5 +162,38 @@ public class App {
             return new int[]{b[0],a[1]};
         }
         return null;
+    }
+
+    /**
+     * 860. 柠檬水找零
+     * @param bills
+     * @return
+     */
+    public static boolean lemonadeChange(int[] bills) {
+        int[] temp = new int[3];
+
+        for (int i = 0;i<bills.length;i++){
+            if (bills[i] == 5){
+                temp[0]++;
+            }
+            if (bills[i] == 10){
+                temp[1]++;
+                temp[0]--;
+            }
+            //贪心 当有20时先减10再减5
+            if (bills[i] == 20){
+                temp[2]++;
+                if (temp[1]>0){
+                    temp[1]--;
+                    temp[0]--;
+                }else {
+                    temp[0] = temp[0]-3;
+                }
+            }
+            if (temp[0]<0 || temp[1]<0 || temp[2]<0){
+                return false;
+            }
+        }
+        return true;
     }
 }

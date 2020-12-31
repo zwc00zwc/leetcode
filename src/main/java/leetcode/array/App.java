@@ -20,8 +20,10 @@ public class App {
         int[] a2 = new int[]{2,5,6};
         //merge(a1,3,a2,3);
 
-        int[] a = new int[]{0,0,0};
-        List<List<Integer>> res = threeSum(a);
+        int[] a = new int[]{-2,1};
+
+        int res = maxSubArray(a);
+        //List<List<Integer>> res = threeSum(a);
 //        mergeSort(array,0,6);
 //        for (int i = 0;i<array.length;i++){
 //            System.out.println(array[i]);
@@ -338,5 +340,32 @@ public class App {
         }
         //递归
         return lastStoneWeight(stones);
+    }
+
+    /**
+     * 53. 最大子序和
+     * 贪心算法
+     * @param nums
+     * @return
+     */
+    public static int maxSubArray(int[] nums) {
+        if (nums.length < 1){
+            return 0;
+        }
+        if (nums.length < 2){
+            return nums[0];
+        }
+
+        int res = nums[0];
+        int temp = 0;
+        for (int i = 0;i<nums.length;i++){
+            temp = temp + nums[i];
+            res = Math.max(res,temp);
+            //当和未负数，说明当前指针位置的值不是增益，需要重该指针后面开始计算
+            if (temp <= 0){
+                temp = 0;
+            }
+        }
+        return res;
     }
 }
