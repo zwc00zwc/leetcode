@@ -585,4 +585,26 @@ public class App {
         }
         return res;
     }
+
+    /**
+     * 404. 左叶子之和
+     * @param root
+     * @return
+     */
+    public static int sumOfLeftLeaves(TreeNode root) {
+        int[] res = new int[1];
+        backSumOfLeftLeaves(root,res);
+        return res[0];
+    }
+
+    public static void backSumOfLeftLeaves(TreeNode root, int[] res){
+        if (root == null){
+            return;
+        }
+        if (root.left != null && root.left.left==null && root.left.right == null){
+            res[0] = res[0] + root.left.val;
+        }
+        backSumOfLeftLeaves(root.left,res);
+        backSumOfLeftLeaves(root.right,res);
+    }
 }
