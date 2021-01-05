@@ -196,4 +196,35 @@ public class App {
         }
         return true;
     }
+
+    /**
+     * 134. 加油站
+     * 贪心算法，局部解释当前加油站剩余大于0，整体剩余大于0
+     * 一直纠结的地方是如果一个节点有剩余，后面节点消耗大于前面剩余，整体剩余大于等于0，
+     * 这种情况起始是开始节点选错了，只要整体消耗大于等于0，就会有一个节点存在
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int totalSum = 0;
+
+        int curSum = 0;
+        int index = 0;
+
+        for (int i = 0;i<gas.length;i++){
+            totalSum = totalSum + gas[i] - cost[i];
+            curSum = curSum + gas[i] - cost[i];
+            //如果当前节点的消耗大于获取，重置当前汽油消耗
+            if (curSum < 0){
+                index = i+1;
+                curSum = 0;
+            }
+        }
+        if (totalSum < 0){
+            return -1;
+        }
+
+        return index;
+    }
 }
