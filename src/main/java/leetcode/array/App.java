@@ -12,6 +12,7 @@ public class App {
     public static void main(String[] args) {
         int[] array = new int[]{3,1,6,4,7,4,5};
         //kuickSort(array,0,array.length - 1);
+        insertSort(array);
 
 //        int[][] r = new int[][]{{1,2,3},{4,5,6}};
 //        transpose(r);
@@ -86,6 +87,73 @@ public class App {
         }
         array[index] = temp;
         return index;
+    }
+
+    /**
+     * 快速排序坑位法
+     * @param array
+     * @param start
+     * @param end
+     * @return
+     */
+    public static int positionKuick(int[] array,int start,int end){
+        int left = start;
+        int right = end;
+        //设置坑位指针，和初始值通一个位置
+        int index = start;
+        int temp = array[start];
+        while (left!=right){
+            //如果右指针比基准值大，指针往左移
+            while (left < right && array[right] > temp){
+                right--;
+            }
+            //右指针比基准值小，坑位指针设置为右指针，坑位存放右指针值
+            array[index] = array[right];
+            index = right;
+
+            //如果左指针比基准值小，指针往右移
+            while (left < right && array[left] <= temp){
+                left++;
+            }
+            //左指针比基准值大，坑位指针设置为左指针，坑位存放左指针值
+            array[index] = array[left];
+            index = left;
+        }
+        //此时的指针就是基准值该待的位置
+        array[index] = temp;
+        return index;
+    }
+
+    /**
+     * 插入排序
+     * 思路，遍历指针，指针之前的数组是有序数组，如果当前指针位置的值小于指针前一位的值
+     * 需要将该指针插入到之前有序数组的正确位置
+     * @param nums
+     * @return
+     */
+    public static int[] insertSort(int[] nums) {
+        //遍历指针
+        for (int i = 1;i<nums.length;i++){
+            int j = i;
+            int temp = nums[j];
+            //如果当前指针值小于前一位值，说明需要将该指针值插入到前面有序数组正确位置
+            if (nums[j]<nums[j-1]){
+                //遍历有序数组寻找正确位置
+                while (j>0){
+                    //如果当前位置的值大于前面的值，前面的值往后移一位，疼一个位置出来
+                    if (temp<nums[j-1]){
+                        nums[j] = nums[j-1];
+                        j--;
+                    }else {
+                        //因为是有序数组，所以当有不大于发生就可以break,已经找到指针的正确位置
+                        break;
+                    }
+                }
+                //正确位置赋值
+                nums[j] = temp;
+            }
+        }
+        return nums;
     }
 
     /**
