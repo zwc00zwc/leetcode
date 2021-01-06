@@ -12,7 +12,7 @@ public class App {
     public static void main(String[] args) {
         int[] array = new int[]{3,1,6,4,7,4,5};
         //kuickSort(array,0,array.length - 1);
-        insertSort(array);
+        //insertSort(array);
 
 //        int[][] r = new int[][]{{1,2,3},{4,5,6}};
 //        transpose(r);
@@ -23,7 +23,10 @@ public class App {
 
         int[] a = new int[]{-2,1};
 
-        int res = maxSubArray(a);
+        //int res = maxSubArray(a);
+
+        int[] d = new int[]{2,3,1,2,4,3};
+        int res = minSubArrayLen(7,d);
         //List<List<Integer>> res = threeSum(a);
 //        mergeSort(array,0,6);
 //        for (int i = 0;i<array.length;i++){
@@ -436,5 +439,32 @@ public class App {
             }
         }
         return res;
+    }
+
+    /**
+     * 209. 长度最小的子数组
+     * 双指针滑动窗口解题
+     * @param s
+     * @param nums
+     * @return
+     */
+    public static int minSubArrayLen(int s, int[] nums) {
+        int sum = 0;
+        //定义右指针，左指针
+        int rightIndex = 0;
+        int leftIndex = 0;
+        int res = Integer.MAX_VALUE;
+        //右指针先走
+        while (rightIndex < nums.length) {
+            sum = sum + nums[rightIndex];
+            rightIndex++;
+            //如果值大于设定值，缩小窗口，即左指针右移
+            while (sum >= s) {
+                res = Math.min(res, rightIndex - leftIndex);
+                sum = sum - nums[leftIndex];
+                leftIndex++;
+            }
+        }
+        return res == Integer.MAX_VALUE ? 0 : res;
     }
 }

@@ -7,8 +7,6 @@ package leetcode.binarySearch;
 public class App {
     public static void main(String[] args) {
         int[] array = new int[]{2,3,1,2,4,3};
-        int res = minSubArrayLen(7,array);
-        System.out.println(res);
     }
 
     /**
@@ -91,40 +89,5 @@ public class App {
             k++;
         }
         return k;
-    }
-
-    /**
-     * 数组最小范围和 双指针窗口
-     * @param s
-     * @param nums
-     * @return
-     */
-    public static int minSubArrayLen(int s, int[] nums) {
-        int firstIndex = 0;
-        int secondIndex = 0;
-        int sum = 0;
-        int count = 0;
-        while (true){
-            if (sum >= s){
-                if (count < 1){
-                    count = firstIndex - secondIndex;
-                }
-                if (firstIndex - secondIndex<count){
-                    count = firstIndex - secondIndex;
-                }
-                if (secondIndex>=nums.length){
-                    break;
-                }
-                sum = sum - nums[secondIndex];
-                secondIndex++;
-            }else {
-                if (firstIndex>=nums.length){
-                    break;
-                }
-                sum = sum + nums[firstIndex];
-                firstIndex++;
-            }
-        }
-        return count;
     }
 }
