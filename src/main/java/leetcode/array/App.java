@@ -192,12 +192,13 @@ public class App {
 
 
     private static void mergeSort(int[] array,int start,int end){
-        if (start<end){
-            int mid = (end + start)/2;
-            mergeSort(array,start,mid);
-            mergeSort(array,mid+1,end);
-            merge(array,start,mid,end);
+        if (start>=end){
+            return;
         }
+        int mid = (end + start)/2;
+        mergeSort(array,start,mid);
+        mergeSort(array,mid+1,end);
+        merge(array,start,mid,end);
     }
 
     /**
