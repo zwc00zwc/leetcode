@@ -12,7 +12,7 @@ public class App {
     }
 
     /**
-     * 二分查找0-(n-1)确实的数字
+     * 剑指 Offer 53 - II. 0～n-1中缺失的数字
      * @param nums
      * @return
      */
@@ -20,22 +20,30 @@ public class App {
         return missing(nums,0,nums.length-1);
     }
 
+    /**
+     * 二分处理0～n-1中缺失的数字
+     * @param nums
+     * @param startIndex
+     * @param endIndex
+     * @return
+     */
     public static int missing(int[] nums,int startIndex,int endIndex){
+        //只需判断开始指针是否大于结束指针，如果大于直接返回开始指针
         if (startIndex > endIndex){
             return startIndex;
         }
 
         int mid = (startIndex + endIndex) / 2;
+
         if (nums[mid] == mid){
             return missing(nums,mid+1,endIndex);
         }
-        if (mid == 0){
-            return 0;
+
+        if (nums[mid] > mid){
+            return missing(nums,startIndex,mid-1);
         }
-        if (nums[mid-1] == mid-1){
-            return mid;
-        }
-        return missing(nums,startIndex,mid-1);
+
+        return missing(nums,mid + 1,endIndex);
     }
 
     /**

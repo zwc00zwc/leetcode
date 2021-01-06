@@ -60,7 +60,22 @@ public class App {
         r1.left = r0;
         r1.right = r8;
 
-        TreeNode res = lowestCommonAncestor(root,r5,r1);
+        //TreeNode res = lowestCommonAncestor(root,r5,r1);
+
+        TreeNode t3 = new TreeNode(3);
+        TreeNode t9 = new TreeNode(9);
+        TreeNode t20 = new TreeNode(20);
+        t3.left = t9;
+        t3.right = t20;
+
+        TreeNode t15 = new TreeNode(15);
+        TreeNode t7 = new TreeNode(7);
+        t20.left = t15;
+        t20.right = t7;
+
+        int res = sumOfLeftLeaves(t3);
+
+        System.out.println(res);
         //System.out.println(res.val);
         //getMinimumDifference(a);
         //zigzagLevelOrder(a);
