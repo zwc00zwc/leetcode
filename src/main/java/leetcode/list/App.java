@@ -1,6 +1,7 @@
 package leetcode.list;
 
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @Author: siskin_zh
@@ -162,7 +163,7 @@ public class App {
     }
 
     /**
-     * 两两交换相邻节点
+     * 24. 两两交换链表中的节点
      * @param head
      * @return
      */
@@ -209,22 +210,25 @@ public class App {
     }
 
     /**
-     * 翻转链表
+     * 剑指 Offer 24. 反转链表
+     * 头插法
      * @param head
      * @return
      */
     public static ListNode reverseList(ListNode head) {
-        if (head==null){
+        if (head == null){
             return head;
         }
-        ListNode next = null;
         ListNode newHead = new ListNode(head.val);
-
         while (head.next!=null){
-            next = new ListNode(head.next.val);
-            next.next = newHead;
-            newHead = next;
+            //head已经赋值过了，从next开始
             head = head.next;
+            //构建新的临时节点
+            ListNode temp = new ListNode(head.val);
+            //临时节点为新的头节点
+            temp.next = newHead;
+            //临时头节点重新赋值给新头节点
+            newHead = temp;
         }
         return newHead;
     }
@@ -452,5 +456,45 @@ public class App {
         tempList[tempList.length-1] = res.next;
         //递归
         return mergeKLists(tempList);
+    }
+
+    /**
+     * 25. K 个一组翻转链表
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode reverseKGroup(ListNode head,int k){
+        if (head == null){
+            return null;
+        }
+
+        ListNode tempHead = head;
+        //使用栈来进行翻转链表，遍历链表得到k个链表值
+        Stack<Integer> stack = new Stack();
+        int i = 0;
+        while (i<k){
+            if (tempHead == null){
+                break;
+            }
+            stack.push(tempHead.val);
+            tempHead = tempHead.next;
+            i++;
+        }
+        //如果不足k个，直接返回
+        if (i<k){
+            return head;
+        }
+        //进行翻转链表
+        ListNode listNode = new ListNode(0);
+        ListNode newHead = listNode;
+        while (!stack.isEmpty()){
+            int v = stack.pop();
+            listNode.next = new ListNode(v);
+            listNode = listNode.next;
+        }
+        //递归执行
+        listNode.next = reverseKGroup(tempHead,k);
+        return newHead.next;
     }
 }

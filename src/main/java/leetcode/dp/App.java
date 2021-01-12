@@ -18,12 +18,13 @@ public class App {
         //String[] array = new String[]{"10", "0001", "111001", "1", "0"};
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
-        int[] a = new int[]{10,9,8,7};
-        int[] b = new int[]{5,6,7,8};
-        int[] c = new int[]{7,6,5,4,3,2,1};
-        int rs = countSubstrings("aaa");
+//        int[] a = new int[]{10,9,8,7};
+//        int[] b = new int[]{5,6,7,8};
+//        int[] c = new int[]{7,6,5,4,3,2,1};
+//        int rs = countSubstrings("aaa");
         //int rs = findContentChildren(a,b);
         //int rs = lengthOfLIS(a);
+        int rs = uniquePaths(3,7);
         System.out.println(rs);
     }
 
@@ -265,5 +266,34 @@ public class App {
             }
         }
         return res;
+    }
+
+    /**
+     * 62. 不同路径
+     * 动态规划解法
+     * @param m
+     * @param n
+     * @return
+     */
+    public static int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        //边界只能有一条走法
+        for (int i = 0; i < n; i++){
+            dp[0][i] = 1;
+        }
+        //边界只能有一条走法
+        for (int i = 0; i < m; i++){
+            dp[i][0] = 1;
+        }
+        //转换方程打到下一个点只能走右或者下,所以获得所有走法有以下方程
+        //f[i][j]=f[i-1][j]+f[i][j+1]
+        //举例要到达f[3][3]点，所有走法 f[3][3]=f[2][3]+f[3][4]
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        //数组从0开始，所以传参-1位实际位置
+        return dp[m - 1][n - 1];
     }
 }
