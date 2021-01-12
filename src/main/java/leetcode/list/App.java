@@ -20,7 +20,7 @@ public class App {
         ListNode listNode2 = new ListNode(5);
         listNode2.next = new ListNode(6);
         listNode2.next.next = new ListNode(4);
-        addTwoNumbers(listNode,listNode2);
+//        addTwoNumbers(listNode,listNode2);
 //        ListNode temp = swapPairs(listNode);;
 //        ListNode res = temp;
         //temp.next = listNode;
@@ -76,7 +76,7 @@ public class App {
     }
 
     /**
-     * 向右旋转链表
+     * 61. 旋转链表
      * @param head
      * @param k
      * @return
@@ -85,30 +85,29 @@ public class App {
         if (head == null || k == 0){
             return head;
         }
-        ListNode temp = head;
-
-        ListNode first = head;
-        ListNode end;
+        //思路是构成一个环，进行旋转，旋转后将尾节点的next置位null
+        //设置尾节点
+        ListNode tail = head;
         int count = 1;
-        while (true){
-            if (head.next == null){
-                end = head;
-                head.next = temp;
-                break;
-            }
-            head = head.next;
+        //计算链表个数同时得到尾节点
+        while (tail.next != null){
+            tail = tail.next;
             count++;
         }
+        //尾节点指向头节点，构成链表环
+        tail.next = head;
 
-        k = k % count;
-        k = count - k;
-
-        for (int i= 0;i<k;i++){
-            first = first.next;
-            end = end.next;
+        int i = 0;
+        //向右旋转等于反向向下走，品一哈
+        k = count - k % count;
+        while (i<k){
+            head = head.next;
+            tail = tail.next;
+            i++;
         }
-        end.next = null;
-        return first;
+        //将尾节点next置为null
+        tail.next = null;
+        return head;
     }
 
     /**
