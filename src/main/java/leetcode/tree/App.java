@@ -104,7 +104,7 @@ public class App {
     }
 
     /**
-     * 后续遍历
+     * 145. 二叉树的后序遍历
      * @param root
      * @return
      */
@@ -124,7 +124,7 @@ public class App {
     }
 
     /**
-     * 二叉树节点数
+     * 222. 完全二叉树的节点个数
      * @param root
      * @return
      */
@@ -144,7 +144,7 @@ public class App {
     }
 
     /**
-     * 路径总和 是否存在路径
+     * 112. 路径总和 是否存在路径
      * @param root
      * @param sum
      * @return
@@ -224,7 +224,7 @@ public class App {
 
 
     /**
-     * 查找二叉树路径之和
+     * 113. 路径总和 II
      * @param root
      * @param sum
      * @return
@@ -360,11 +360,11 @@ public class App {
 
     /**
      * 98. 验证二叉搜索树
-     * 给每个节点校验上限和下限
      * @param root
      * @return
      */
     public boolean isValidBST(TreeNode root) {
+        //给每个节点校验上限和下限
         return backIsValidBST(root,Long.MIN_VALUE,Long.MAX_VALUE);
     }
 
