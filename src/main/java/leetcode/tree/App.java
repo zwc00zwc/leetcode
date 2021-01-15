@@ -12,70 +12,21 @@ import java.util.Stack;
  */
 public class App {
     public static void main(String[] args){
-        TreeNode treeNode11 = new TreeNode(11);
-        TreeNode treeNode7 = new TreeNode(7);
-        TreeNode treeNode2 = new TreeNode(2);
-        treeNode11.left = treeNode7;
-        treeNode11.right = treeNode2;
-
-        TreeNode treeNode41 = new TreeNode(4);
-        TreeNode treeNode51 = new TreeNode(5);
-        TreeNode treeNode1 = new TreeNode(1);
-        treeNode41.left = treeNode51;
-        treeNode41.right = treeNode1;
-
-        TreeNode treeNode8 = new TreeNode(8);
-        TreeNode treeNode13 = new TreeNode(13);
-        treeNode8.left = treeNode13;
-        treeNode8.right = treeNode41;
-
-        TreeNode treeNode4 = new TreeNode(4);
-        treeNode4.left = treeNode11;
-
-        TreeNode treeNode = new TreeNode(5);
-        treeNode.left = treeNode4;
-        treeNode.right = treeNode8;
-
-
-        TreeNode a = new TreeNode(5);
-        TreeNode b = new TreeNode(4);
-        TreeNode c = new TreeNode(7);
-
-
-        TreeNode root = new TreeNode(3);
-        TreeNode r5 = new TreeNode(5);
-        TreeNode r1 = new TreeNode(1);
-        root.left = r5;
-        root.right = r1;
-        TreeNode r6 = new TreeNode(6);
-        TreeNode r2 = new TreeNode(2);
-        r5.left = r6;
-        r5.right = r2;
-        TreeNode r7 = new TreeNode(7);
-        TreeNode r4 = new TreeNode(4);
-        r2.left = r7;
-        r2.right = r4;
-        TreeNode r0 = new TreeNode(7);
-        TreeNode r8 = new TreeNode(7);
-        r1.left = r0;
-        r1.right = r8;
-
-        //TreeNode res = lowestCommonAncestor(root,r5,r1);
-
+        TreeNode t5 = new TreeNode(5);
         TreeNode t3 = new TreeNode(3);
-        TreeNode t9 = new TreeNode(9);
-        TreeNode t20 = new TreeNode(20);
-        t3.left = t9;
-        t3.right = t20;
+        TreeNode t6 = new TreeNode(6);
+        t5.left = t3;
+        t5.right = t6;
 
-        TreeNode t15 = new TreeNode(15);
+        TreeNode t2 = new TreeNode(2);
+        TreeNode t4 = new TreeNode(4);
+        t3.left = t2;
+        t3.right = t4;
+
         TreeNode t7 = new TreeNode(7);
-        t20.left = t15;
-        t20.right = t7;
+        t6.right = t7;
 
-        int res = sumOfLeftLeaves(t3);
-
-        System.out.println(res);
+        System.out.println("main");
         //System.out.println(res.val);
         //getMinimumDifference(a);
         //zigzagLevelOrder(a);
@@ -621,5 +572,55 @@ public class App {
         }
         backSumOfLeftLeaves(root.left,res);
         backSumOfLeftLeaves(root.right,res);
+    }
+
+    /**
+     * 剑指 Offer 55 - I. 二叉树的深度
+     * @param root
+     * @return
+     */
+    public int maxDepth(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        //遍历左边深度
+        int left = maxDepth(root.left);
+        //遍历右边深度
+        int right = maxDepth(root.right);
+        //左右会有重复，取最大值+1即可
+        return Math.max(left,right)+1;
+    }
+
+    /**
+     * 110. 平衡二叉树
+     * @param root
+     * @return
+     */
+    public boolean isBalanced(TreeNode root) {
+        return balancedMaxDepth(root) != -1;
+    }
+
+    private int balancedMaxDepth(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        //获取左节点的深度
+        int left = balancedMaxDepth(root.left);
+        //获取右节点的深度
+        int right = balancedMaxDepth(root.right);
+        //如果左节点深度为-1，即左节点不满足平衡二叉树，返回-1
+        if(left == -1) {
+            return -1;
+        }
+        //如果右节点深度为-1，即右节点不满足平衡二叉树，返回-1
+        if(right == -1) {
+            return -1;
+        }
+        //如果左右深度差大于等于1，即不满足平衡二叉树，返回-1
+        if (Math.abs(left - right)>1){
+            return -1;
+        }
+        //满足平衡二叉树返回最大深度
+        return Math.max(left, right) + 1;
     }
 }
