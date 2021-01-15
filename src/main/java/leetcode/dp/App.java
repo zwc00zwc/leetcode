@@ -296,4 +296,42 @@ public class App {
         //数组从0开始，所以传参-1位实际位置
         return dp[m - 1][n - 1];
     }
+
+    /**
+     * 64. 最小路径和
+     * 动态规划解法
+     * @param grid
+     * @return
+     */
+    public int minPathSum(int[][] grid) {
+        if (grid.length<1){
+            return 0;
+        }
+
+        int m = grid.length;
+        int n = grid[0].length;
+        //定义dp数组，两维数组m,n最小的和
+        int[][] dp = new int[m][n];
+        //设置初始值
+        dp[0][0] = grid[0][0];
+        //从左上角到右下角，只能向下或者向右，所以左边界和上边界只能有一种走法
+        //初始左边界和
+        for (int i = 1;i<m;i++){
+            dp[i][0] = dp[i-1][0] + grid[i][0];
+        }
+        //初始上边界和
+        for (int i = 1;i<n;i++){
+            dp[0][i] = dp[0][i-1] + grid[0][i];
+        }
+
+        //转换方程，dp[i][k] = Math.min(dp[i][k-1],dp[i-1][k]) + grid[i][k];
+        //遍历所有元素，转换计算
+        for (int i = 1;i<m;i++){
+            for (int k = 1;k<n;k++){
+                dp[i][k] = Math.min(dp[i][k-1],dp[i-1][k]) + grid[i][k];
+            }
+        }
+        //返回结果
+        return dp[m-1][n-1];
+    }
 }
