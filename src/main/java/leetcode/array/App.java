@@ -2,7 +2,9 @@ package leetcode.array;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -17,16 +19,19 @@ public class App {
 //        int[][] r = new int[][]{{1,2,3},{4,5,6}};
 //        transpose(r);
 
-        int[] a1 = new int[]{1,2,3,0,0,0};
-        int[] a2 = new int[]{2,5,6};
+
+        int[] a1 = new int[]{3,3,3,1,2,1,1,2,3,3,4};
+        int res = totalFruit(a1);
+//        int[] a2 = new int[]{2,5,6};
         //merge(a1,3,a2,3);
 
-        int[] a = new int[]{-2,1};
+//        int[] a = new int[]{-2,1};
 
         //int res = maxSubArray(a);
 
-        int[] d = new int[]{2,3,1,2,4,3};
-        int res = minSubArrayLen(7,d);
+//        int[] d = new int[]{2,3,1,2,4,3};
+//        int res = minSubArrayLen(7,d);
+        System.out.println(res);
         //List<List<Integer>> res = threeSum(a);
 //        mergeSort(array,0,6);
 //        for (int i = 0;i<array.length;i++){
@@ -466,5 +471,44 @@ public class App {
             }
         }
         return res == Integer.MAX_VALUE ? 0 : res;
+    }
+
+    /**
+     * 904. 水果成篮
+     * 题解本意是求解只包含两种元素的最长连续子序列
+     * 利用滑动窗口解题
+     * @param tree
+     * @return
+     */
+    public static int totalFruit(int[] tree) {
+        //记录每个数字出现的次数
+        Map<Integer,Integer> map = new HashMap<>();
+        int res = 0;
+        int k = 0;
+        for (int i=0;i<tree.length;i++){
+            //数字往窗口放
+            if (map.containsKey(tree[i])){
+                int temp = map.get(tree[i]);
+                temp++;
+                map.put(tree[i],temp);
+            }else {
+                map.put(tree[i],1);
+            }
+            //当map大于2说明窗口内有超过2中数字
+            //缩小窗口剔除左边
+            while (map.size()>2){
+                int temp = map.get(tree[k]);
+                temp--;
+                if (temp<1){
+                    map.remove(tree[k]);
+                }else {
+                    map.put(tree[k],temp);
+                }
+                k++;
+            }
+            //计算符合条件的窗口大小就是结果
+            res = Math.max(res,i-k+1);
+        }
+        return res;
     }
 }
