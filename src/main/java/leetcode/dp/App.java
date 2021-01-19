@@ -28,35 +28,6 @@ public class App {
         System.out.println(rs);
     }
 
-    /**
-     * 最长不重复字符 双指针窗口
-     * @param s
-     * @return
-     */
-    public static int lengthOfLongestSubstring(String s) {
-        Map<Character,Integer> map = new HashMap<>();
-        int i = 0;
-        int k = 0;
-        int max = 0;
-        while (true){
-            if (i>=s.length()){
-                break;
-            }
-            char v = s.charAt(i);
-            if (map.containsKey(v)){
-                //关键点，需要确定坐指针的位置，通过比较那个大
-                //abba 当走到最后a的时候指针应该指向第二点b，而不是第一个a
-                k = Math.max(k,map.get(v)+1);
-            }
-            if (i - k + 1>max){
-                max = i - k + 1;
-            }
-            map.put(v,i);
-            i++;
-        }
-        return max;
-    }
-
 
     /**
      * 474 1和0

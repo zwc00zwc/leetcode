@@ -10,7 +10,9 @@ import java.util.Set;
  */
 public class App {
     public static void main(String[] args){
-        isIsomorphic("ab","aa");
+        //isIsomorphic("ab","aa");
+        int res = lengthOfLongestSubstring("abcabcbb");
+        System.out.println(res);
     }
 
     /**
@@ -85,5 +87,55 @@ public class App {
             }
         }
         return true;
+    }
+
+    /**
+     * 3. 无重复字符的最长子串
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring(String s) {
+        Map<Character,Integer> map = new HashMap<>();
+        int i = 0;
+        int k = 0;
+        int max = 0;
+        while (true){
+            if (i>=s.length()){
+                break;
+            }
+            char v = s.charAt(i);
+            if (map.containsKey(v)){
+                //关键点，需要确定坐指针的位置，通过比较那个大
+                //abba 当走到最后a的时候指针应该指向第二点b，而不是第一个a
+                k = Math.max(k,map.get(v)+1);
+            }
+            max = Math.max(max,i - k + 1);
+            map.put(v,i);
+            i++;
+        }
+        return max;
+    }
+
+    /**
+     * 3. 无重复字符的最长子串
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstringfor(String s) {
+        if (s.length()<1){
+            return 0;
+        }
+        int res = 0;
+        int startIndex = 0;
+        Map<Character,Integer> map = new HashMap<>();
+        for (int i = 0;i<s.length();i++){
+            //当有重复字符出现，初始指针指向上一次字符的下一个指针
+            if (map.containsKey(s.charAt(i))){
+                startIndex = Math.max(startIndex,map.get(s.charAt(i))+1);
+            }
+            map.put(s.charAt(i),i);
+            res = Math.max(res,i-startIndex+1);
+        }
+        return res;
     }
 }
