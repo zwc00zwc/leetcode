@@ -15,8 +15,11 @@ public class App {
         //int[] array = new int[]{1,17,5,10,13,15,10,5,16,8};
         //int rs = wiggleMaxLength(array);
         //int rs = lengthOfLongestSubstring("abba");
-        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
-        int res = findMaxForm1(array,5,3);
+//        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
+//        int res = findMaxForm1(array,5,3);
+
+        int[] array = new int[]{2,7,4,1,8,1};
+        int res = lastStoneWeightII(array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
 //        int[] a = new int[]{10,9,8,7};
@@ -366,5 +369,32 @@ public class App {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 1049. 最后一块石头的重量 II
+     * 此题可以理解为将数组分为两部分，两部分的和差最小
+     * @param stones
+     * @return
+     */
+    public static int lastStoneWeightII(int[] stones) {
+        int sum = 0;
+        for (int i = 0;i<stones.length;i++){
+            sum = sum+stones[i];
+        }
+        //总和的一半，即将数组分成和相等的两部分
+        int target = sum / 2;
+
+        int[] dp = new int[target+1];
+
+        for (int i = 0;i<stones.length;i++){
+            //遍历背包空间进行状态转移，为什么使用倒叙，当前数组中的数字只能
+            //放入背包一次，如果进行正序遍历，在转换方程中会将当前数字多次放入
+            //背包，即dp[j-nums[i]]+num[i]会每次都加上nums[i]
+            for (int j = target;j>=stones[i];j--){
+                dp[j] = Math.max(dp[j],dp[j-stones[i]]+stones[i]);
+            }
+        }
+        return Math.abs(dp[target] - (sum - dp[target]));
     }
 }
