@@ -623,4 +623,31 @@ public class App {
         //满足平衡二叉树返回最大深度
         return Math.max(left, right) + 1;
     }
+
+    /**
+     * 1373. 二叉搜索子树的最大键值和
+     * @param root
+     * @return
+     */
+    public int maxSumBST(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        //获取左节点值
+        int left = maxSumBST(root.left);
+        //获取右节点值
+        int right = maxSumBST(root.right);
+
+        if (left > root.val){
+            return left;
+        }
+
+        if (right < root.val){
+            return left;
+        }
+
+        return left+right;
+    }
+
+
 }

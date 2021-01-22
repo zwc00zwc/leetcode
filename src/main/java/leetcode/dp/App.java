@@ -15,7 +15,8 @@ public class App {
         //int[] array = new int[]{1,17,5,10,13,15,10,5,16,8};
         //int rs = wiggleMaxLength(array);
         //int rs = lengthOfLongestSubstring("abba");
-        //String[] array = new String[]{"10", "0001", "111001", "1", "0"};
+        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
+        int res = findMaxForm1(array,5,3);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
 //        int[] a = new int[]{10,9,8,7};
@@ -24,13 +25,15 @@ public class App {
 //        int rs = countSubstrings("aaa");
         //int rs = findContentChildren(a,b);
         //int rs = lengthOfLIS(a);
-        int rs = uniquePaths(3,7);
-        System.out.println(rs);
+//        int[] nums = new int[]{1,2,5};
+//        boolean res = canPartition(nums);
+        //int rs = uniquePaths(3,7);
+        System.out.println(res);
     }
 
 
     /**
-     * 474 1和0
+     * 474 1和0 三维数组
      * @param strs
      * @param m
      * @param n
@@ -58,6 +61,31 @@ public class App {
         }
 
         return dp[strs.length][m][n];
+    }
+
+    /**
+     * 474 1和0 二维数组
+     * @param strs
+     * @param m
+     * @param n
+     * @return
+     */
+    public static int findMaxForm1(String[] strs, int m, int n) {
+        //定义dp数组，即背包，下标是背包容量指标下最大的子集数量
+        int[][] dp = new int[m+1][n+1];
+
+        //遍历字符串数组
+        for (int i = 0;i<strs.length;i++){
+            int[] temp = strCount(strs[i]);
+            //状态转移，字符串数组中的结果只能放一次，只能进行倒叙遍历背包容量指标
+            //dp[j][k] = Math.max(dp[j][k],dp[j-temp[0]][k-temp[1]]+1);
+            for (int j = m;j>=temp[0];j--){
+                for (int k = n;k>=temp[1];k--){
+                    dp[j][k] = Math.max(dp[j][k],dp[j-temp[0]][k-temp[1]]+1);
+                }
+            }
+        }
+        return dp[m][n];
     }
 
     public static int[] strCount(String s){
@@ -304,5 +332,39 @@ public class App {
         }
         //返回结果
         return dp[m-1][n-1];
+    }
+
+    /**
+     * 416. 分割等和子集
+     * @param nums
+     * 使用动态规划进行解题，转化为背包问题，只要判断容量为nums和一半的背包能够被放满即可
+     * @return
+     */
+    public static boolean canPartition(int[] nums) {
+        int sum = 0;
+        for (int i= 0;i<nums.length;i++){
+            sum = sum + nums[i];
+        }
+        //总和不是偶数直接返回false
+        if (sum % 2 >0){
+            return false;
+        }
+        int target = sum/2;
+        //定义dp数组，含义为dp容量的背包放进去的最大的子集和,dp数组大小只要数组和的一半即可
+        int[] dp = new int[sum/2+1];
+
+        //dp转换方程 dp[j] = Math.max(dp[j],dp[j-nums[i]]+num[i])
+        for (int i = 0;i<nums.length;i++){
+            //遍历背包空间进行状态转移，为什么使用倒叙，当前数组中的数字只能
+            //放入背包一次，如果进行正序遍历，在转换方程中会将当前数字多次放入
+            //背包，即dp[j-nums[i]]+num[i]会每次都加上nums[i]
+            for (int j = target;j>=nums[i];j--){
+                dp[j] = Math.max(dp[j],dp[j-nums[i]]+nums[i]);
+            }
+        }
+        if (dp[target] == target){
+            return true;
+        }
+        return false;
     }
 }
