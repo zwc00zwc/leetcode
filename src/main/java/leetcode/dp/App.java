@@ -1,10 +1,6 @@
 package leetcode.dp;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: siskin_zh
@@ -18,8 +14,8 @@ public class App {
 //        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
 //        int res = findMaxForm1(array,5,3);
 
-        int[] array = new int[]{2,7,4,1,8,1};
-        int res = lastStoneWeightII(array);
+        int[] array = new int[]{1,1,1,1,1};
+        int res = change(5,array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
 //        int[] a = new int[]{10,9,8,7};
@@ -31,6 +27,7 @@ public class App {
 //        int[] nums = new int[]{1,2,5};
 //        boolean res = canPartition(nums);
         //int rs = uniquePaths(3,7);
+        findTargetSumWays(array,3);
         System.out.println(res);
     }
 
@@ -396,5 +393,115 @@ public class App {
             }
         }
         return Math.abs(dp[target] - (sum - dp[target]));
+    }
+
+    /**
+     * 322. 零钱兑换
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public static int coinChange(int[] coins, int amount) {
+        if (amount == 0){
+            return 0;
+        }
+        //定义零钱背包，及dp下标金额所需要的最少硬币
+        int[] dp = new int[amount+1];
+
+        //该题为完全背包问题，遍历背包容量从小到大
+        for (int i = 1;i<=amount;i++){
+            for (int j = 0;j<coins.length;j++){
+                //初始化dp
+                if (i == coins[j]){
+                    dp[i] = 1;
+                    break;
+                }
+                //转换方程 dp[i] = Math.min(dp[i-coin] + 1)
+                //需要调节dp[i-coin]是有值的，即i-coin是可以有硬币组成的
+                if (i>=coins[j] && dp[i-coins[j]]>0){
+                    //因为是取最小值 如果dp[i]为0，直接设置值，其余情况用转换方程设置
+                    if (dp[i]==0){
+                        dp[i] = dp[i-coins[j]]+1;
+                    }else {
+                        dp[i] = Math.min(dp[i],dp[i-coins[j]]+1);
+                    }
+                }
+            }
+        }
+        return dp[amount] == 0?-1:dp[amount];
+    }
+
+    /**
+     * 518. 零钱兑换 II
+     * @param amount
+     * @param coins
+     * @return
+     */
+    public static int change(int amount, int[] coins) {
+        //和爬楼梯一样
+        //定义dp数组，下标最多的组合
+        int[] dp = new int[amount+1];
+        //该题和爬楼梯类似，设置初始值，dp[0]=1，即背包容量和放入背包相等组合也为1
+        dp[0] = 1;
+        //遍历循环，如果是硬币在外面，就是组合，如果是背包容量在外面，就是排列
+        for (int j = 0;j<coins.length;j++){
+            for (int i = 1;i <=amount;i++){
+                if (i<coins[j]){
+                    continue;
+                }
+                //转换方程，dp[i] = dp[i-coin]
+                dp[i] = dp[i] + dp[i-coins[j]];
+            }
+        }
+
+        return dp[amount];
+    }
+
+    /**
+     * 494. 目标和
+     * @param nums
+     * @param S
+     * @return
+     */
+    public static int findTargetSumWays(int[] nums, int S) {
+        //动态规划解法，该题可以分解为将nums数组分为量部分，一部分是加法集合p，一部分为减法集合q
+        //数组中总数为sum，加法集合总和为sum(p)，减法集合总和sum(q),sum=sum(p)+sum(q)
+        //S=sum(p)-sum(q)进行加法运算 sum(p) = S + sum(q);
+        // sum(p)+sum(p)=S + sum(q)+sum(p);2sum(p) = s + sum
+        //得到sum(p) = (s+sum)/2
+        //可以将题目转化为在数组中求有多少个子集总和为sum(p)
+        //转化为01背包问题，即求背包容量为sum(p)的背包有几种方式可以装满
+
+        int sum = 0;
+        for (int i = 0;i<nums.length;i++){
+            sum = sum + nums[i];
+        }
+
+        if (S>sum){
+            return 0;
+        }
+
+        //总和不能整除2则背包不存在，即没有结果
+        if ((S+sum)%2>0){
+            return 0;
+        }
+
+        //定义dp数组，下标为背包容量，即该背包容量可以被装满的子集数
+        int[] dp = new int[(S+sum)/2+1];
+
+        //初始化dp，即背包容量和放入背包相等组合也为1
+        dp[0] = 1;
+
+        //物品在外，求组合，背包容量在外求排列
+        for (int i = 0;i<nums.length;i++){
+            //转换方程，dp[j] = dp[j] + dp[j-num];即背包容量为j的背包装满
+            //只需要背包容量j-num的背包再放入一个num即可
+            //此处需要倒叙遍历背包，倒叙每个物品只能放入一次
+            for (int j = (S+sum)/2;j>=nums[i];j--){
+                dp[j] = dp[j] + dp[j-nums[i]];
+            }
+        }
+
+        return dp[(S+sum)/2];
     }
 }

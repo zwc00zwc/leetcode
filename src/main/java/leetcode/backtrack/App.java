@@ -17,8 +17,8 @@ public class App {
         //int[] coins = new int[]{2};
         //int res = coinChange(coins,3);
         //int count = numberOfMatches(7);
-        int[] array = new int[]{2,3,6,7};
-        combinationSum(array,7);
+        int[] array = new int[]{1,2,5};
+        change(5,array);
         int res = 0;
     }
 
@@ -339,6 +339,33 @@ public class App {
                 temp.remove(temp.size()-1);
                 tempSum = tempSum - candidates[i];
             }
+        }
+    }
+
+    /**
+     * 518. 零钱兑换 II
+     * @param amount
+     * @param coins
+     * @return
+     */
+    public static int change(int amount, int[] coins) {
+        int[] res =new int[2];
+        backChange(amount,coins,0,res);
+        return res[1];
+    }
+
+    public static void backChange(int amount,int[] coins,int index,int[] res){
+        if (res[0] == amount){
+            res[1]++;
+            return;
+        }
+        if (res[0] > amount){
+            return;
+        }
+        for (int i = index;i<coins.length;i++){
+            res[0] = res[0] + coins[i];
+            backChange(amount,coins,i,res);
+            res[0] = res[0] - coins[i];
         }
     }
 }
