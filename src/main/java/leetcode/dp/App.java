@@ -15,7 +15,7 @@ public class App {
 //        int res = findMaxForm1(array,5,3);
 
         int[] array = new int[]{1,1,1,1,1};
-        int res = change(5,array);
+//        int res = change(5,array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
 //        int[] a = new int[]{10,9,8,7};
@@ -27,7 +27,7 @@ public class App {
 //        int[] nums = new int[]{1,2,5};
 //        boolean res = canPartition(nums);
         //int rs = uniquePaths(3,7);
-        findTargetSumWays(array,3);
+        int res = findTargetSumWays1(array,3);
         System.out.println(res);
     }
 
@@ -40,9 +40,11 @@ public class App {
      * @return
      */
     public static int findMaxForm(String[] strs, int m, int n){
-        //状态转移，之前子集最多加上当前字符串即当前字符串下最大
-        // 0~(i-1)背包能放下的最大值 加上i能满足背包容量，即0~i背包能放下的最大值，一步一步知道整个数组
+        //定义的三维数组起始可以理解为两维数组，第一个下标是字符数组的子集推导，即从0-1子集，0-2子集一步一步到0-i子集
+        //后面的两个下标定义的是背包的容量，即0，1能放多少的背包
         int[][][] dp = new int[strs.length+1][m+1][n+1];
+        //使用三维数组状态转移必须依赖前一个子集，之前子集最多加上当前字符串即当前字符串下最大
+        //当i下标的字符串放不下 0~(i-1)背包能放下的最大值 加上i能满足背包容量，即0~i背包能放下的最大值，一步一步知道整个数组
 
         for (int i = 1; i<=strs.length;i++){
             int[] count = strCount(strs[i-1]);
@@ -489,7 +491,7 @@ public class App {
         //定义dp数组，下标为背包容量，即该背包容量可以被装满的子集数
         int[] dp = new int[(S+sum)/2+1];
 
-        //初始化dp，即背包容量和放入背包相等组合也为1
+        //初始化dp，即背包容量为1，不放任何东西都一个填满背包，初始就是1
         dp[0] = 1;
 
         //物品在外，求组合，背包容量在外求排列
@@ -503,5 +505,58 @@ public class App {
         }
 
         return dp[(S+sum)/2];
+    }
+
+    public static int findTargetSumWays1(int[] nums, int S) {
+        //动态规划解法，该题可以分解为将nums数组分为量部分，一部分是加法集合p，一部分为减法集合q
+        //数组中总数为sum，加法集合总和为sum(p)，减法集合总和sum(q),sum=sum(p)+sum(q)
+        //S=sum(p)-sum(q)进行加法运算 sum(p) = S + sum(q);
+        // sum(p)+sum(p)=S + sum(q)+sum(p);2sum(p) = s + sum
+        //得到sum(p) = (s+sum)/2
+        //可以将题目转化为在数组中求有多少个子集总和为sum(p)
+        //转化为01背包问题，即求背包容量为sum(p)的背包有几种方式可以装满
+
+        int sum = 0;
+        for (int i = 0;i<nums.length;i++){
+            sum = sum + nums[i];
+        }
+
+        if (S>sum){
+            return 0;
+        }
+
+        //总和不能整除2则背包不存在，即没有结果
+        if ((S+sum)%2>0){
+            return 0;
+        }
+
+        //定义dp二维数组
+        //第一个下标是指0-i子集进行操作，第二个下标是背包容量
+        //dp整体定义为是0-i子集中背包容量能放满的组合数
+        int[][] dp = new int[nums.length+1][(S+sum)/2+1];
+
+        //初始化dp，下标为背包容量，即该背包容量可以被装满的子集数
+        dp[0][0] = 1;
+
+        //推导过程，下标i表示0-i子集，子集i-1推导到子集i，所以每一个i都是依赖于i-1的子集
+        //dp[i][j] = dp[i-1][j] i下标为num，如果背包容量j放不下num，则0-i子集背包能放满的组合数就是0-(i-1)子集的组合数
+        //dp[i][j] = dp[i-1][j] + dp[i-1][i-num] 如果num能放入背包中，则0-i子集背包能放满的组合数为0-(i-1)子集的组合数加上0-(i-1)少num的组合数
+
+        //物品在外，求组合，背包容量在外求排列
+        for (int i = 1;i<=nums.length;i++){
+            //转换方程，dp[i][j] = dp[i][j] + dp[i][j-num];即背包容量为j的背包装满
+            //二维数组可以通过正序
+            for (int j = 0;j<=(S+sum)/2;j++){
+                //背包容量放不下物品，从i-1继承组合数(子集推导过程)
+                if (nums[i-1]>j){
+                    dp[i][j] = dp[i-1][j];
+                }else {
+                    //背包能放下物品，进行结果计算
+                    dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i-1]];
+                }
+            }
+        }
+
+        return dp[nums.length][(S+sum)/2];
     }
 }
