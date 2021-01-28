@@ -15,6 +15,7 @@ public class App {
 //        int res = findMaxForm1(array,5,3);
 
         int[] array = new int[]{1,1,1,1,1};
+        numWays1(3);
 //        int res = change(5,array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
@@ -164,7 +165,7 @@ public class App {
     }
 
     /**
-     * 青蛙跳台阶问题
+     * 剑指 Offer 10- II. 青蛙跳台阶问题
      * @param n
      * @return
      */
@@ -179,6 +180,29 @@ public class App {
             dp[i] = dp[i-1] + dp[i-2];
         }
 
+        return dp[n];
+    }
+
+    /**
+     * 剑指 Offer 10- II. 青蛙跳台阶问题 转换背包问题解法
+     * @param n
+     * @return
+     */
+    public static int numWays1(int n) {
+        //定义dp数组，背包容量为台阶数，整体定义为背包容量放满物品最多的排列数
+        int[] dp = new int[n+1];
+        //初始化，容量为0，组合次数为1
+        dp[0] = 1;
+        //跳台阶为物品排列，背包遍历放外面
+        for (int j = 1;j<=n;j++){
+            //物品为1和2
+            for (int i = 1;i<=2;i++){
+                if (j>=i){
+                    //转换方程dp[j] = dp[j] + dp[j-i]
+                    dp[j] = (dp[j]+dp[j-i]) % 1000000007;
+                }
+            }
+        }
         return dp[n];
     }
 
