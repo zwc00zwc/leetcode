@@ -8,14 +8,14 @@ import java.util.Arrays;
  */
 public class App {
     public static void main(String[] args){
-        //int[] array = new int[]{1,17,5,10,13,15,10,5,16,8};
+        int[] array = new int[]{10,9,2,5,3,7,101,18};
         //int rs = wiggleMaxLength(array);
         //int rs = lengthOfLongestSubstring("abba");
 //        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
 //        int res = findMaxForm1(array,5,3);
 
-        int[] array = new int[]{1,1,1,1,1};
-        numWays1(3);
+        //int[] array = new int[]{1,1,1,1,1};
+        lengthOfLIS(array);
 //        int res = change(5,array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
@@ -28,8 +28,8 @@ public class App {
 //        int[] nums = new int[]{1,2,5};
 //        boolean res = canPartition(nums);
         //int rs = uniquePaths(3,7);
-        int res = findTargetSumWays1(array,3);
-        System.out.println(res);
+//        int res = findTargetSumWays1(array,3);
+//        System.out.println(res);
     }
 
 
@@ -110,20 +110,21 @@ public class App {
      * @return
      */
     public static int lengthOfLIS(int[] nums) {
-        //使用动态规划，dp是以i结尾的数组子集有最大的递增子序列
-        //转换方程是
-        // dp[i] 需要和 nums[0]~nums[i-1]进行比较，
-        //当nums[i] > nums[j], dp[i]=Math.max(dp[i],dp[j]+1)
-        //1,3,6,7,9,4,10,5,6
+        // dp[i] 可能会是 nums[0]~nums[i-1]中任意的一个数组组成递增子序列
+        if (nums.length<2){
+            return nums.length;
+        }
         int max = 1;
+        //定义dp数组，下标为当前指针下自增的子序列长度
         int[] dp = new int[nums.length];
-        for (int i = 0;i<nums.length;i++){
+        dp[0]=1;
+        for (int i = 1;i<nums.length;i++){
+            //初始为1
             dp[i] = 1;
-            if (i<1){
-                continue;
-            }
-
+            //自增子序列开头值会变化，重新整理dp数组
             for (int j = 0;j<i;j++){
+                //当前指针和前面指针值进行比较，计算当前指针之前的最长自增子序列
+                //如果指针i大于j，只需将最长子序列+1，转换方程，dp[i] = Math.max(dp[i],dp[j]+1)
                 if (nums[i]>nums[j]){
                     dp[i] = Math.max(dp[i],dp[j]+1);
                     max = Math.max(max,dp[i]);
@@ -243,7 +244,7 @@ public class App {
         if (prices.length<2){
             return 0;
         }
-        //存储0-i的最大收益 转换方程是 0-i最大收益 = 0-(i-1)最大收益 和 i-min(0-i)大的值
+        //存储0-i的最大收益 转换方程是 0-i收益 = i 减去 (0-i)最小的值
         int[] dp = new int[prices.length];
         //存储0-i的最小值 转换方程是 0-i的最小值 = 0-(i-1)最小值 和当前值小的值
         int[] mimDp = new int[prices.length];
@@ -583,4 +584,89 @@ public class App {
 
         return dp[nums.length][(S+sum)/2];
     }
+
+    /**
+     * 1553. 吃掉 N 个橘子的最少天数 (动态规划超时了)
+     * @param n
+     * @return
+     */
+    public static int minDays(int n) {
+        //定义dp数组
+        int[] dp = new int[n+1];
+
+        //完全背包问题
+        for (int i = 1;i<=n;i++){
+            if (dp[i]==0){
+                dp[i] = dp[i-1]+1;
+            }else {
+                dp[i] = Math.min(dp[i],dp[i-1]+1);
+            }
+            //物品有3个
+            if (i%2==0){
+                int temp = i/2;
+                dp[i] = Math.min(dp[i],dp[i-temp]+1);
+            }
+            if (i%3==0){
+                int temp = 2*(i/3);
+                dp[i] = Math.min(dp[i],dp[i-temp]+1);
+            }
+        }
+
+        return dp[n];
+    }
+
+
+    /**
+     * 1155. 掷骰子的N种方法
+     * @param d
+     * @param f
+     * @param target
+     * @return
+     */
+    public static int numRollsToTarget(int d, int f, int target) {
+        if (target < d || target > d * f) {
+            return 0;
+        }
+
+        //解题为 有d个物品，重量随机在[1,f]，需要在背包容量为target中放满，且所有物品都要使用到
+        //定义dp数组，放置n个物品的总重量，值为组合方式
+        int[][] dp = new int[d+1][target+1];
+        dp[0][0] = 1;
+        int mod = 1000000007;
+        //遍历物品数量
+        for (int i =1;i<=d;i++){
+            //遍历背包容量
+            for (int j = 0;j<=target;j++){
+                //遍历每个物品的容量
+                for (int k = 1;k<=f;k++){
+                    if (j>=k){
+                        //dp转换方程 dp[i][j] = dp[i][j] + dp[i-1][j-k]
+                        //因为每个物品都需要被放置
+                        dp[i][j] = (dp[i][j] + dp[i - 1][j - k])%mod;
+                    }
+                }
+            }
+        }
+        return dp[d][target];
+    }
+
+    /**
+     * 面试题 01.05. 一次编辑
+     * @param first
+     * @param second
+     * @return
+     */
+//    public boolean oneEditAway(String first, String second) {
+//        //思路
+//        //判断两个字符串是否是对方的子集
+//        if (first.length() - second.length()>1){
+//            return false;
+//        }
+//
+//        //first字符串中和second相等的子集
+//        int nums = second.length();
+//        int[] dp = new int[nums+1];
+//
+//        for (int i = 0;i<)
+//    }
 }
