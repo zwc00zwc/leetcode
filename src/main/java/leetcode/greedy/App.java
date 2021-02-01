@@ -63,6 +63,38 @@ public class App {
     }
 
     /**
+     * 376. 摆动序列
+     * @param nums
+     * @return
+     */
+    public static int wiggleMaxLength1(int[] nums) {
+        //需要构成摇摆，就需要上升和下降，当num[i]>num[i-1],即指针i是处于上升时
+        //该指针之前最大的摆动序列是最大的下降序列+1，反之就是处于下降该指针之前的
+        //最大摆动序列是最大的上升序列+1
+        if (nums.length<2){
+            return nums.length;
+        }
+        int up = 1;
+        int down = 1;
+
+        for (int i = 0;i<nums.length;i++){
+            if (i == 0){
+                continue;
+            }
+            //上升了，摆动周期为下降+1;
+            if (nums[i]>nums[i-1]){
+                up = down+1;
+            }
+            //下降了，摆动周期为上升+1
+            if (nums[i]<nums[i-1]){
+                down = up+1;
+            }
+        }
+
+        return Math.max(up,down);
+    }
+
+    /**
      * 135. 分发糖果
      * 贪心算法，通过局部最优解推算出全局最优解，该题局部最优解释顺序走大的比小的多
      * 先从左到右走一遍，在从右到左走一遍，得到全局最优解

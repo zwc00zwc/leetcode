@@ -9,7 +9,6 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args){
         int[] array = new int[]{10,9,2,5,3,7,101,18};
-        //int rs = wiggleMaxLength(array);
         //int rs = lengthOfLongestSubstring("abba");
 //        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
 //        int res = findMaxForm1(array,5,3);
@@ -133,36 +132,6 @@ public class App {
         }
 
         return max;
-    }
-
-    /**
-     * 376. 摆动序列 dp解法
-     * @param nums
-     * @return
-     */
-    public static int wiggleMaxLength(int[] nums) {
-        //需要构成摇摆，就需要上升和下降，当num[i]>num[i-1],即指针i是处于上升时
-        //该指针之前最大的摆动序列是最大的下降序列+1，反之就是处于下降该指针之前的
-        //最大摆动序列是最大的上升序列+1
-        if (nums.length<2){
-            return nums.length;
-        }
-        int up = 1;
-        int down = 1;
-
-        for (int i = 0;i<nums.length;i++){
-            if (i == 0){
-                continue;
-            }
-            if (nums[i]>nums[i-1]){
-                up = down+1;
-            }
-            if (nums[i]<nums[i-1]){
-                down = up+1;
-            }
-        }
-
-        return Math.max(up,down);
     }
 
     /**
