@@ -638,4 +638,28 @@ public class App {
 //
 //        for (int i = 0;i<)
 //    }
+
+    /**
+     * 279. 完全平方数
+     * @param n
+     * @return
+     */
+    public int numSquares(int n) {
+        //完全背包问题，物品是平方数
+        int[] dp = new int[n+1];
+        //遍历背包容量
+        for (int i = 1;i<=n;i++){
+            //遍历物品
+            for (int j = 1;j*j<=n;j++){
+                if (i>=j*j){
+                    if (dp[i] == 0){
+                        dp[i] = dp[i-j*j]+1;
+                    }else {
+                        dp[i] = Math.min(dp[i],dp[i-j*j]+1);
+                    }
+                }
+            }
+        }
+        return dp[n];
+    }
 }
