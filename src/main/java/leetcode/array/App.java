@@ -3,8 +3,10 @@ package leetcode.array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * Hello world!
@@ -510,5 +512,49 @@ public class App {
             res = Math.max(res,i-k+1);
         }
         return res;
+    }
+
+    /**
+     * 数组循环报数，为index的弹出，返回最后剩下的数字
+     * @param array
+     * @param index
+     * @return
+     */
+    private static int round(int[] array,int index){
+        //利用双队列解题
+        Queue<Integer> q1 = new LinkedList();
+        Queue<Integer> q2 = new LinkedList();
+
+        for (int i = 0;i<array.length;i++){
+            q1.add(array[i]);
+        }
+
+        int length = q1.size();
+        int i = 1;
+        while (length > 1){
+            while (!q1.isEmpty()){
+                int temp = q1.poll();
+                if (i%index!=0){
+                    q2.add(temp);
+                }else {
+                    length--;
+                }
+                i++;
+            }
+            while (!q2.isEmpty()){
+                int temp = q2.poll();
+                if (i%index!=0){
+                    q1.add(temp);
+                }else {
+                    length--;
+                }
+                i++;
+            }
+        }
+        if (!q1.isEmpty()){
+            return q1.poll();
+        }else {
+            return q2.poll();
+        }
     }
 }
