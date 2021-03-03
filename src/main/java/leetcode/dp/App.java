@@ -8,13 +8,13 @@ import java.util.Arrays;
  */
 public class App {
     public static void main(String[] args){
-        int[] array = new int[]{10,9,2,5,3,7,101,18};
+        int[] array = new int[]{7,1,5,3,6,4};
         //int rs = lengthOfLongestSubstring("abba");
 //        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
 //        int res = findMaxForm1(array,5,3);
 
         //int[] array = new int[]{1,1,1,1,1};
-        lengthOfLIS(array);
+        maxProfit1(array);
 //        int res = change(5,array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
@@ -226,6 +226,39 @@ public class App {
             res = Math.max(res,dp[i]);
         }
         return res;
+    }
+
+    /**
+     * 122. 买卖股票的最佳时机 II
+     * @param prices
+     * @return
+     */
+    public static int maxProfit1(int[] prices) {
+        int len = prices.length;
+        if (len < 2) {
+            return 0;
+        }
+
+        // cash：持有现金
+        // hold：持有股票
+        // 状态数组
+        // 状态转移：cash → hold → cash → hold → cash → hold → cash
+        int[] cash = new int[len];
+        int[] hold = new int[len];
+
+        cash[0] = 0;
+        hold[0] = -prices[0];
+        System.out.println(cash[0]);
+        System.out.println(hold[0]);
+
+        for (int i = 1; i < len; i++) {
+            // 这两行调换顺序也是可以的
+            cash[i] = Math.max(cash[i - 1], hold[i - 1] + prices[i]);
+            hold[i] = Math.max(hold[i - 1], cash[i - 1] - prices[i]);
+            System.out.println(cash[i]);
+            System.out.println(hold[i]);
+        }
+        return cash[len - 1];
     }
 
     /**
@@ -661,5 +694,46 @@ public class App {
             }
         }
         return dp[n];
+    }
+
+    /**
+     * 5. 最长回文子串
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome(String s) {
+        //动态规划解法
+        //定义 boolean[][] dp = true 为指针范围是否为回文子串，
+        //dp数组关系 如果 s[j] == s[i] dp[j+1][i-1]==true 则说明i-j为回文子串
+        //aba也会回文子串，还有一个条件为 i-j >= 2
+        if (s==null || s.length()<1){
+            return "";
+        }
+        int max = 1;
+        String res = s.substring(0,1);
+        boolean[][] dp = new boolean[s.length()][s.length()];
+
+        for (int i = 0;i<s.length();i++){
+            dp[i][i] = true;
+            for (int j = 0;j<=i;j++){
+                //如果两边指针字符相等，需要判断是否为回文子串
+                if (s.charAt(j) == s.charAt(i)){
+                    if (i-j<=2){
+                        dp[j][i] = true;
+                    }else {
+                        dp[j][i] = dp[j+1][i-1];
+                    }
+                }else {
+                    dp[j][i] = false;
+                }
+
+                if (i-j+1>max && dp[j][i]){
+                    max = i-j+1;
+                    res = s.substring(j,i+1);
+                }
+            }
+        }
+
+        return res;
     }
 }

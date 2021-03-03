@@ -12,7 +12,12 @@ public class App {
         int[] array = new int[]{2,3,1,2,4,3};
         //minSubArrayLen(7,array);
         //lengthOfLongestSubstring("pwwkew");
-        checkInclusion("ab","eidboaoo");
+
+        int[] height = new int[]{1,1};
+
+        int res = maxArea(height);
+        System.out.println(res);
+        //checkInclusion("ab","eidboaoo");
     }
 
     /**
@@ -120,5 +125,30 @@ public class App {
             }
         }
         return dp[amount];
+    }
+
+    /**
+     * 11. 盛最多水的容器
+     * @param height
+     * @return
+     */
+    public static int maxArea(int[] height) {
+        //双指针解法，左右两边往中间靠，知道左右重合，往中间靠的节点未哪一边小，即去除了能影响
+        //面积的无效边界
+        int m = 0;
+        int n = height.length-1;
+
+        int res = (n - m) * Math.min(height[m],height[n]);
+        while (m<n){
+            if (height[m] < height[n]){
+                m++;
+                res = Math.max(res,(n - m) * Math.min(height[m],height[n]));
+            }else {
+                n--;
+                res = Math.max(res,(n - m) * Math.min(height[m],height[n]));
+            }
+        }
+
+        return res;
     }
 }

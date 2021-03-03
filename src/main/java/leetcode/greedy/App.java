@@ -108,6 +108,7 @@ public class App {
 
         int[] res = new int[ratings.length];
         res[0]=1;
+        //从左到右遍历，方法糖果
         for (int i= 1;i<ratings.length;i++){
             if (ratings[i]>ratings[i-1]){
                 res[i] = res[i-1]+1;
@@ -116,6 +117,8 @@ public class App {
             }
         }
 
+        //从右到左在进行一次发放糖果，题中要求是分数高的要比两侧都多，在此一次遍历过程中
+        //右边都是会比左边多的，所以在右到左遍历过程中只需要比较左边比右边是否大就行。
         for (int k= ratings.length-2;k>=0;k--){
             if (ratings[k]>ratings[k+1]){
                 res[k] = Math.max(res[k],res[k+1]+1);
