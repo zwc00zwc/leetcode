@@ -239,24 +239,30 @@ public class App {
             return 0;
         }
 
-        // cash：持有现金
-        // hold：持有股票
-        // 状态数组
-        // 状态转移：cash → hold → cash → hold → cash → hold → cash
+        // cash：持有现金账户有多少钱
+        // hold：持有股票账户有多少钱
+        // 推导方程为现金账户等于前一天现金账户+前一天的股票账户(全卖)
+        // 股票账户等于前一天的股票账户+前一天的现金账户(全买)
         int[] cash = new int[len];
         int[] hold = new int[len];
 
+        //
         cash[0] = 0;
+        //初始值，第一天持有股票当前账户等于是倒欠钱，现金账户为-prices[0]
         hold[0] = -prices[0];
-        System.out.println(cash[0]);
-        System.out.println(hold[0]);
+        System.out.println("持有现金："+cash[0]);
+        System.out.println("持有股票："+hold[0]);
 
+        //7,1,5,3,6,4
         for (int i = 1; i < len; i++) {
-            // 这两行调换顺序也是可以的
+            //推导方程，如果这一天所有的股票都卖出大于当前账户钱，就卖出，如果当前股票卖出
+            //账户金额小于持有金额账户金额，说明股票价格低，不合适
             cash[i] = Math.max(cash[i - 1], hold[i - 1] + prices[i]);
+            //持股账户金额等于持现金的账户金额-股票价格，判断是否要买股票，如果现金
+            //买完股票账户金额小于了之前的持有股票账户金额，说明当前价格高不合适
             hold[i] = Math.max(hold[i - 1], cash[i - 1] - prices[i]);
-            System.out.println(cash[i]);
-            System.out.println(hold[i]);
+            System.out.println("持有现金："+cash[i]);
+            System.out.println("持有股票："+hold[i]);
         }
         return cash[len - 1];
     }

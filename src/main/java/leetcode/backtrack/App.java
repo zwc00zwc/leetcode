@@ -17,8 +17,8 @@ public class App {
         //int[] coins = new int[]{2};
         //int res = coinChange(coins,3);
         //int count = numberOfMatches(7);
-        int[] array = new int[]{1,2,5};
-        change(5,array);
+        int[] array = new int[]{1,2,3};
+        permute(array);
         int res = 0;
     }
 
@@ -366,6 +366,43 @@ public class App {
             res[0] = res[0] + coins[i];
             backChange(amount,coins,i,res);
             res[0] = res[0] - coins[i];
+        }
+    }
+
+    /**
+     * 46. 全排列
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        if (nums.length<1){
+            return res;
+        }
+        backPermute(nums,res,temp);
+        return res;
+    }
+
+    private static void backPermute(int[] nums, List<List<Integer>> res, List<Integer> temp){
+        //中止条件
+        if (temp.size() == nums.length){
+            List<Integer> r = new ArrayList<>();
+            r.addAll(temp);
+            res.add(r);
+            return;
+        }
+        //回溯循环
+        for (int i = 0;i<nums.length;i++){
+            if (temp.contains(nums[i])){
+                continue;
+            }
+            temp.add(nums[i]);
+            backPermute(nums,res,temp);
+            //弹出
+            if (temp.size()>0){
+                temp.remove(temp.size()-1);
+            }
         }
     }
 }
