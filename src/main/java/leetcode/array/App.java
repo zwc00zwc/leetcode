@@ -150,7 +150,7 @@ public class App {
             if (nums[j]<nums[j-1]){
                 //遍历有序数组寻找正确位置
                 while (j>0){
-                    //如果当前位置的值大于前面的值，前面的值往后移一位，疼一个位置出来
+                    //如果当前位置的值大于前面的值，前面的值往后移一位，腾一个位置出来
                     if (temp<nums[j-1]){
                         nums[j] = nums[j-1];
                         j--;
@@ -164,6 +164,26 @@ public class App {
             }
         }
         return nums;
+    }
+
+    /**
+     * 冒泡排序 3 1 4 2 5
+     * @param array
+     */
+    public static void sort(int[] array){
+        for (int i = 0;i<array.length;i++){
+            int index = i;
+            int temp = array[i];
+            for (int j = i;j<array.length;j++){
+                if (array[j]<temp){
+                    index = j;
+                    temp = array[j];
+                }
+            }
+            temp = array[i];
+            array[i] = array[index];
+            array[index] = temp;
+        }
     }
 
     /**

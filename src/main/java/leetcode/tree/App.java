@@ -9,23 +9,28 @@ import java.util.Stack;
 /**
  * @Author: siskin_zh
  * @Date: 2020 2020-12-18 11:29
+ * 二叉树遍历
+ * 前序遍历 中左右 自顶而下进行遍历
+ * 中序遍历 左中右 自低而上进行遍历
+ * 后序遍历 左右中 自低而上进行遍历
  */
 public class App {
     public static void main(String[] args){
-        TreeNode t5 = new TreeNode(5);
-        TreeNode t3 = new TreeNode(3);
-        TreeNode t6 = new TreeNode(6);
-        t5.left = t3;
-        t5.right = t6;
-
+        TreeNode root = new TreeNode(1);
         TreeNode t2 = new TreeNode(2);
+        TreeNode t5 = new TreeNode(5);
+        root.left = t2;
+        root.right = t5;
+
+        TreeNode t3 = new TreeNode(3);
         TreeNode t4 = new TreeNode(4);
-        t3.left = t2;
-        t3.right = t4;
+        t2.left = t3;
+        t2.right = t4;
 
-        TreeNode t7 = new TreeNode(7);
-        t6.right = t7;
+        TreeNode t6 = new TreeNode(6);
+        t5.left = t6;
 
+        flatten(root);
         System.out.println("main");
         //System.out.println(res.val);
         //getMinimumDifference(a);
@@ -122,6 +127,7 @@ public class App {
             return;
         }
 
+        //计算和
         temp[0] = temp[0] + root.val;
         if (temp[0] == sum && root.left == null && root.right == null){
             res[0] = true;
@@ -129,11 +135,13 @@ public class App {
 
         if (root.left != null){
             backPathSum(root.left,sum,temp,res);
+            //弹出
             temp[0] = temp[0] - root.left.val;
         }
 
         if (root.right != null){
             backPathSum(root.right,sum,temp,res);
+            //弹出
             temp[0] = temp[0] - root.right.val;
         }
 
@@ -151,6 +159,7 @@ public class App {
             return false;
         }
 
+        //计算和
         temp[0] = temp[0] + root.val;
         if (temp[0] == sum && root.left == null && root.right == null){
             return true;
@@ -160,6 +169,7 @@ public class App {
             if (backPathSum(root.left,sum,temp)){
                 return true;
             }
+            //如果不是则弹出这个节点
             temp[0] = temp[0] - root.left.val;
         }
 
@@ -167,6 +177,7 @@ public class App {
             if (backPathSum(root.right,sum,temp)){
                 return true;
             }
+            //如果不是则弹出这个节点
             temp[0] = temp[0] - root.right.val;
         }
         return false;
@@ -404,7 +415,7 @@ public class App {
      * @return
      */
     public TreeNode insertIntoBST(TreeNode root, int val) {
-        //如果未null了进行赋值
+        //如果为null了进行赋值
         if (root == null){
             return new TreeNode(val);
         }
@@ -649,5 +660,32 @@ public class App {
         return left+right;
     }
 
+    /**
+     * 114. 二叉树展开为链表
+     * @param root
+     */
+    public static void flatten(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        flattenList(root,list);
 
+        TreeNode temp = new TreeNode();
+        root = temp;
+        if (list!=null && list.size()>0){
+            for (Integer item:list) {
+                temp.right = new TreeNode(item);
+                temp.left = null;
+                temp = temp.right;
+            }
+        }
+        root = root.right;
+    }
+
+    private static void flattenList(TreeNode root,List<Integer> list){
+        if (root == null){
+            return;
+        }
+        list.add(root.val);
+        flattenList(root.left,list);
+        flattenList(root.right,list);
+    }
 }
