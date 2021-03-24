@@ -187,6 +187,36 @@ public class App {
     }
 
     /**
+     * 1143. 最长公共子序列
+     * @param text1
+     * @param text2
+     * @return
+     */
+    public int longestCommonSubsequence(String text1, String text2) {
+        if (text1.length() <1 || text2.length()<1){
+            return 0;
+        }
+
+        int res = 0;
+        //定义dp数组，dp[i][j] text1下标，text2下标最长公共子序列
+        int[][] dp = new int[text1.length()+1][text2.length()+1];
+
+        for (int i = 0;i<text1.length();i++){
+            for (int j = 0;j<text2.length();j++){
+                //如果下标字符相等直接继承之前的结果
+                if (text1.charAt(i) == text2.charAt(j)){
+                    dp[i+1][j+1] = dp[i][j] + 1;
+                }else {
+                    dp[i+1][j+1] = Math.max(dp[i][j+1],dp[i+1][j]);
+                }
+                res = Math.max(res,dp[i+1][j+1]);
+            }
+        }
+
+        return res;
+    }
+
+    /**
      * 剑指 Offer 10- II. 青蛙跳台阶问题
      * @param n
      * @return
