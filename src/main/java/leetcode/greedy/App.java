@@ -1,6 +1,8 @@
 package leetcode.greedy;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Author: siskin_zh
@@ -12,9 +14,13 @@ public class App {
         int[] array = new int[]{1,2,4,2,5,7,2,4,9,0};
         //wiggleMaxLength(array);
         int[][] a = new int[][]{{10,16},{2,8},{1,6},{7,12}};
-        findMinArrowShots(a);
+        //findMinArrowShots(a);
         int[] b = new int[]{5,5,5,10,20};
-        lemonadeChange(b);
+
+        int[] A = new int[]{2,7,11,15};
+        int[] B = new int[]{1,10,4,11};
+        advantageCount(A,B);
+        //lemonadeChange(b);
     }
 
     /**
@@ -261,5 +267,42 @@ public class App {
         }
 
         return index;
+    }
+
+    /**
+     * 870. 优势洗牌
+     * @param A
+     * @param B
+     * @return
+     */
+    public static int[] advantageCount(int[] A, int[] B) {
+        //贪心算法，只要A数组的每个指针位比B指针位大的值最小的值即可
+        Arrays.sort(A);
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0;i<A.length;i++){
+            list.add(A[i]);
+        }
+        int[] res = new int[A.length];
+        for (int i = 0;i<B.length;i++){
+            int k = 0;
+            int temp = Integer.MIN_VALUE;
+            while (k<list.size()){
+                //只要计算出A中比B指针位值大且在A中是最小的值
+                if (list.get(k)>B[i]){
+                    temp = list.get(k);
+                    break;
+                }
+                k++;
+            }
+            if (temp==Integer.MIN_VALUE){
+                res[i] = list.get(0);
+                list.remove(0);
+            }else {
+                res[i] = temp;
+                list.remove(k);
+            }
+        }
+
+        return res;
     }
 }

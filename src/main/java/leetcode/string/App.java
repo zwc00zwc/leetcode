@@ -32,10 +32,13 @@ public class App {
 
     /**
      * 387. 字符串中的第一个唯一字符
-     * @param s
+     * @param
      * @return
      */
     public int firstUniqChar(String s) {
+        //使用hashMap存储计算过程结果
+        //int[0] 存储指针
+        //int[1] 存储出现次数
         Map<Character,int[]> map = new HashMap<>();
         for(int i = 0;i<s.length();i++){
             if (map.containsKey(s.charAt(i))){

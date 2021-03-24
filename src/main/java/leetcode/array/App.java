@@ -460,7 +460,7 @@ public class App {
         for (int i = 0;i<nums.length;i++){
             temp = temp + nums[i];
             res = Math.max(res,temp);
-            //当和未负数，说明当前指针位置的值不是增益，需要重该指针后面开始计算
+            //当和为负数，说明当前指针位置的值不是增益，需要重该指针后面开始计算
             if (temp <= 0){
                 temp = 0;
             }
