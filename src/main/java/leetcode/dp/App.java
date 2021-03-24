@@ -114,7 +114,8 @@ public class App {
             return nums.length;
         }
         int max = 1;
-        //定义dp数组，下标为当前指针下自增的子序列长度
+        //定义dp数组，下标为当前指针下自增的子序列长度，如果 nums[i] > nums[j]则 dp[i]就是dp[j]的延续，
+        // 即dp[i] = dp[j] + 1
         int[] dp = new int[nums.length];
         dp[0]=1;
         for (int i = 1;i<nums.length;i++){
@@ -132,6 +133,57 @@ public class App {
         }
 
         return max;
+    }
+
+    /**
+     * 674. 最长连续递增序列
+     * @param nums
+     * @return
+     */
+    public int findLengthOfLCIS(int[] nums) {
+        if (nums.length<2){
+            return nums.length;
+        }
+        //定义dp数组，含义下标最长连续递增序列
+        int[] dp = new int[nums.length];
+
+        int max = 0;
+        dp[0] = 1;
+        for (int i = 1;i<nums.length;i++){
+            dp[i] = 1;
+            //如果num[i] > nums[i-1] 直接继承dp[i-1]结果+1
+            if (nums[i]>nums[i-1]){
+                dp[i] = dp[i-1]+1;
+            }
+            max = Math.max(max,dp[i]);
+        }
+        return max;
+    }
+
+    /**
+     * 718. 最长重复子数组
+     * @param A
+     * @param B
+     * @return
+     */
+    public int findLength(int[] A, int[] B) {
+        if (A.length<1 || B.length<1){
+            return 0;
+        }
+        //定义dp数组，dp[i][j] 是A指针和B指针最长重复子数组，当A[i] == B[j]
+        //即dp[i][j] = dp[i-1][j-1]+1
+        int[][] dp = new int[A.length+1][B.length+1];
+
+        int res = 0;
+        for (int i = 0;i<A.length;i++){
+            for (int j = 0;j<B.length;j++){
+                if (A[i] == B[j]){
+                    dp[i+1][j+1] = dp[i][j]+1;
+                }
+                res = Math.max(res,dp[i+1][j+1]);
+            }
+        }
+        return res;
     }
 
     /**
