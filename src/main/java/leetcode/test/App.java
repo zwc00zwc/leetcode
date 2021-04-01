@@ -231,4 +231,39 @@ public class App {
         }
         return res == Integer.MAX_VALUE ? 0:res;
     }
+
+    public int findMaxForm(String[] strs, int m, int n) {
+        //定义dp数组，下标为dp[m][n]含义为m个1和n个0最大的字符数量
+        int[][] dp =new int[m+1][n+1];
+        //dp推算方程为dp[m][n] = Math.max(dp[m][n],dp[m-x][n-x]+1);
+
+        //数组中的字符只有两种状态，要么选择要么不选择
+        //01背包问题，遍历物品在外
+        for (int i= 0;i<strs.length;i++){
+            int[] res = getFormRes(strs[i]);
+            //物品只能放一次，倒叙遍历背包容量
+            for (int j = m;j>0;j--){
+                for (int k = n;k>0;k--){
+                    //当前背包不能够放下物品
+                    if (j<res[0] || k<res[1]){
+                        continue;
+                    }
+                    dp[j][k] = Math.max(dp[j][k],dp[j-res[0]][k-res[1]]+1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    private int[] getFormRes(String str){
+        int[] res = new int[2];
+        for (int i = 0;i<str.length();i++){
+            if (str.charAt(i) == 0){
+                res[0]++;
+            }else {
+                res[1]++;
+            }
+        }
+        return res;
+    }
 }

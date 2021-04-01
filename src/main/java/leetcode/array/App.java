@@ -21,9 +21,11 @@ public class App {
 //        int[][] r = new int[][]{{1,2,3},{4,5,6}};
 //        transpose(r);
 
+        int[] a = new int[]{5,2,4,1,3,6,0};
+        int res = findKthLargest(a,4);
 
-        int[] a1 = new int[]{3,3,3,1,2,1,1,2,3,3,4};
-        int res = totalFruit(a1);
+//        int[] a1 = new int[]{3,3,3,1,2,1,1,2,3,3,4};
+//        int res = totalFruit(a1);
 //        int[] a2 = new int[]{2,5,6};
         //merge(a1,3,a2,3);
 
@@ -576,5 +578,33 @@ public class App {
         }else {
             return q2.poll();
         }
+    }
+
+    /**
+     * 215. 数组中的第K个最大元素
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int findKthLargest(int[] nums, int k) {
+        //利用选择排序思想进行
+        int temp = nums[0];
+        int index = 0;
+        for (int i = 0;i<nums.length;i++){
+            temp = nums[i];
+            index = i;
+            for (int j = i+1;j<nums.length;j++){
+                if (nums[j] >temp){
+                    temp = nums[j];
+                    index = j;
+                }
+            }
+            nums[index] = nums[i];
+            nums[i] = temp;
+            if (i+1==k){
+                break;
+            }
+        }
+        return temp;
     }
 }

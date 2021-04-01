@@ -80,6 +80,7 @@ public class App {
         for (int i = 0;i<strs.length;i++){
             int[] temp = strCount(strs[i]);
             //状态转移，字符串数组中的结果只能放一次，只能进行倒叙遍历背包容量指标
+            //遍历物品集合，每个物品只有两种状态要么可以放入要么不可以放入
             //dp[j][k] = Math.max(dp[j][k],dp[j-temp[0]][k-temp[1]]+1);
             for (int j = m;j>=temp[0];j--){
                 for (int k = n;k>=temp[1];k--){
@@ -562,6 +563,7 @@ public class App {
         dp[0] = 1;
         //遍历循环，如果是硬币在外面，就是组合，如果是背包容量在外面，就是排列
         for (int j = 0;j<coins.length;j++){
+            //物品可以放多次可以使用正序遍历背包容量，如果物品只能放入一次，需要倒叙背包容量
             for (int i = 1;i <=amount;i++){
                 if (i<coins[j]){
                     continue;
