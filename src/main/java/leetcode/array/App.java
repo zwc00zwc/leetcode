@@ -22,7 +22,7 @@ public class App {
 //        transpose(r);
 
         int[] a = new int[]{5,2,4,1,3,6,0};
-        int res = findKthLargest(a,4);
+        int res = findKthLargest1(a,4);
 
 //        int[] a1 = new int[]{3,3,3,1,2,1,1,2,3,3,4};
 //        int res = totalFruit(a1);
@@ -606,5 +606,55 @@ public class App {
             }
         }
         return temp;
+    }
+
+    /**
+     * 215. 数组中的第K个最大元素
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int findKthLargest1(int[] nums, int k) {
+        //利用选择排序思想进行
+        int start = 0;
+        int end = nums.length-1;
+        while (true){
+            int index = partitionIndex(nums,start,end);
+            if (index+1==k){
+                return nums[index];
+            }
+            if (index+1>k){
+                end = index-1;
+            }
+            if (index+1<k){
+                start = index+1;
+            }
+        }
+    }
+
+    public static int partitionIndex(int[] array,int start,int end){
+        int left = start;
+        int right = end;
+
+        int index = start;
+        int temp = array[index];
+
+        while (left != right){
+            while (left<right && array[right]<temp){
+                right--;
+            }
+
+            array[index] = array[right];
+            index = right;
+
+            while (left<right && array[left]>=temp){
+                left++;
+            }
+            array[index] = array[left];
+            index = left;
+        }
+
+        array[index] = temp;
+        return index;
     }
 }
