@@ -55,11 +55,15 @@ public class App {
         }
 
         int res = 1;
+        //定义上一个的差值
         int prediff = 0;
+        //定义当前差值
         int currdiff = 0;
         for (int i = 1;i<nums.length;i++){
+            //计算当前差值
             currdiff = nums[i] - nums[i-1];
             //通过指针上升与下降的比较确定峰值或者低估
+            //比较上一个差值和当前差值进行判断是否是摆动
             if ((currdiff > 0 && prediff <=0) || (currdiff < 0 && prediff >= 0)){
                 res++;
                 prediff = currdiff;

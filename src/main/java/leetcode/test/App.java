@@ -266,4 +266,24 @@ public class App {
         }
         return res;
     }
+
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length<2){
+            return nums.length;
+        }
+        //上一个的差值
+        int preDiff = 0;
+        //当前的差值
+        int curDiff = 0;
+        int res = 0;
+        for (int i = 1;i<nums.length;i++){
+            curDiff = nums[i] - nums[i-1];
+            if ((curDiff>0 && preDiff<=0) || (curDiff<0 && preDiff>=0)){
+                res++;
+                preDiff = curDiff;
+            }
+        }
+
+        return res;
+    }
 }
