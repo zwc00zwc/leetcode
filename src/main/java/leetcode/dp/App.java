@@ -8,13 +8,17 @@ import java.util.Arrays;
  */
 public class App {
     public static void main(String[] args){
-        int[] array = new int[]{7,1,5,3,6,4};
+        int[] array = new int[]{1,2,3,1};
         //int rs = lengthOfLongestSubstring("abba");
 //        String[] array = new String[]{"10", "0001", "111001", "1", "0"};
 //        int res = findMaxForm1(array,5,3);
 
         //int[] array = new int[]{1,1,1,1,1};
-        maxProfit1(array);
+        //maxProfit1(array);
+
+
+        int res = rob(array);
+        System.out.println(res);
 //        int res = change(5,array);
         //int rs = findMaxForm(array,5,3);
         //int[] a = new int[]{1,3,6,7,9,4,10,5,6};
@@ -822,6 +826,34 @@ public class App {
                     res = s.substring(j,i+1);
                 }
             }
+        }
+
+        return res;
+    }
+
+    /**
+     * 198. 打家劫舍
+     * @param nums
+     * @return
+     */
+    public static int rob(int[] nums) {
+        //动态规划解题
+        //定义dp数组,含义为下标房间最大的打劫金额,如果当前金额比前一次小则继承上一家的，
+        //转换方程为dp[i] =Math.max(dp[i-2] + nums[i],dp[i-1])
+        int res = Integer.MIN_VALUE;
+        int[] dp = new int[nums.length];
+
+        for (int i = 0;i<nums.length;i++){
+            if (i==0){
+                dp[i] = nums[i];
+            }
+            else if (i == 1){
+                dp[i] = Math.max(nums[0],nums[1]);
+            }
+            else {
+                dp[i] =Math.max(dp[i-2]+nums[i],dp[i-1]);
+            }
+            res = Math.max(res,dp[i]);
         }
 
         return res;

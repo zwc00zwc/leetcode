@@ -14,15 +14,15 @@ import java.util.Queue;
  */
 public class App {
     public static void main(String[] args) {
-        int[] array = new int[]{3,1,6,4,7,4,5};
+        int[] array = new int[]{-1,2,1,-4};
+
+        int res = threeSumClosest(array,1);
         //kuickSort(array,0,array.length - 1);
         //insertSort(array);
 
 //        int[][] r = new int[][]{{1,2,3},{4,5,6}};
 //        transpose(r);
 
-        int[] a = new int[]{5,2,4,1,3,6,0};
-        int res = findKthLargest1(a,4);
 
 //        int[] a1 = new int[]{3,3,3,1,2,1,1,2,3,3,4};
 //        int res = totalFruit(a1);
@@ -656,5 +656,45 @@ public class App {
 
         array[index] = temp;
         return index;
+    }
+
+    /**
+     * 16. 最接近的三数之和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public static int threeSumClosest(int[] nums, int target) {
+        //双指针解法，排序数组，求得三数之和和target绝对值
+        Arrays.sort(nums);
+        int res = Integer.MAX_VALUE;
+        int abs = Integer.MAX_VALUE;
+        for (int i = 0;i<nums.length;i++){
+            int left = i+1;
+            int right = nums.length-1;
+            while (left<right){
+                int sum = nums[i] + nums[left] + nums[right];
+                if (Math.abs(target-sum)<abs){
+                    abs = Math.abs(target-sum);
+                    res = sum;
+                }
+                //和大右指针左移
+                if (sum>target){
+                    right--;
+                    continue;
+                }
+                //和小左指针右移
+                if (sum<target){
+                    left++;
+                    continue;
+                }
+                //如果相等直接结束，已经最小了
+                if (sum == target){
+                    break;
+                }
+            }
+        }
+
+        return res;
     }
 }
